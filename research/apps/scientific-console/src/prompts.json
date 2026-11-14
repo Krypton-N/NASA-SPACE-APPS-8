@@ -1,0 +1,20 @@
+[
+  {
+    "tag": "SOLID FUELS",
+    "title": "Combustion in low airflow",
+    "text": "What limitations does the BASS-II report document for interpreting low-velocity flame-spread observations?",
+    "icon": "flame"
+  },
+  {
+    "tag": "DROPLET DIAGNOSTICS",
+    "title": "See what FLEX measured",
+    "text": "How do the FLEX backlit, ultraviolet and color-camera diagnostics differ, and what limitations are documented?",
+    "icon": "investigations"
+  },
+  {
+    "tag": "GAS FLAMES",
+    "title": "Connect ACME and SPICE",
+    "text": "Which documented methods and experimental conditions can be compared between ACME Flame Design and SPICE, and where is evidence insufficient?",
+    "icon": "discover"
+  }
+]

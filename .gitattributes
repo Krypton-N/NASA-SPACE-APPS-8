@@ -1,0 +1,6 @@
+# research/ es el motor de Liam: verifica checksums SHA-256 de su código y datos,
+# así que sus archivos se guardan y se sacan byte por byte, sin convertir saltos de línea.
+research/** -text
+
+# Scripts y configuración de despliegue: siempre con saltos de línea LF (se ejecutan en Linux).
+deploy/** text eol=lf

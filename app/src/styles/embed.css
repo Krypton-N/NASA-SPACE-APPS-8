@@ -1,0 +1,15 @@
+/* Vistas del equipo dentro de la consola científica: mismo fondo y ritmo que la consola, sin barra propia. */
+body.embed {
+  --space: #090e19;
+  background: var(--space);
+}
+body.embed main {
+  padding-block: 30px 60px;
+}
+body.embed .wrap {
+  max-width: 1360px;
+  padding-inline: clamp(16px, 3vw, 38px);
+}
+body.embed .msg-load {
+  padding: 40px 0;
+}

@@ -1,0 +1,408 @@
+{
+  "snapshot_id": "4e1a3278e25ea2c1d6400b93a89b76979fbb22fb33c201795d1a4d39604773ba",
+  "cases_sha256": "8a5c65d8960c593f9c43af2fea3a94d0b7fad9c4bcbf0451c88f6d9c520162b3",
+  "queries": [
+    {
+      "id": "solid",
+      "question": "Investigations of flame spread over solid materials in microgravity",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 12.862718000178575,
+        "retrieval_ms": 70.16751400078647,
+        "classification_ms": 112.34470500130556,
+        "native_execution_ms": 179.54860299869324,
+        "total_ms": 197.29881700004626,
+        "native_timings_ms": {
+          "planning": 64.91907199961133,
+          "kg_execution": 112.33873700075492,
+          "bm25_ranking": 0.36761800038220827,
+          "bundle_build": 1.901195999380434,
+          "total": 179.5266230001289
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 0,
+          "DISCOVERY": 0,
+          "DOCUMENTARY": 6
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": [
+        "flame",
+        "materials",
+        "over",
+        "solid",
+        "spread"
+      ]
+    },
+    {
+      "id": "comparison",
+      "question": "Compare Saffire I S1 and S2",
+      "sufficiency": "DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 10.055880999061628,
+        "retrieval_ms": 13.837484999385197,
+        "classification_ms": 54.130840000652825,
+        "native_execution_ms": 66.28383200040844,
+        "total_ms": 82.2133900001063,
+        "native_timings_ms": {
+          "planning": 8.058616998823709,
+          "kg_execution": 52.507369000522885,
+          "bm25_ranking": 1.5293720007321099,
+          "bundle_build": 4.166882999925292,
+          "total": 66.262241000004
+        },
+        "candidate_counts": {
+          "DIRECT": 2,
+          "RELATED": 0,
+          "DISCOVERY": 4,
+          "DOCUMENTARY": 2
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": []
+    },
+    {
+      "id": "lunar",
+      "question": "PMMA in a lunar habitat with oxygen 22.2 %",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 5.740862001403002,
+        "retrieval_ms": 76.52732500173443,
+        "classification_ms": 804.5631479981239,
+        "native_execution_ms": 823.0155349992856,
+        "total_ms": 897.9521300007036,
+        "native_timings_ms": {
+          "planning": 67.37811000130023,
+          "kg_execution": 741.3738069990359,
+          "bm25_ranking": 3.143489999274607,
+          "bundle_build": 11.069125001085922,
+          "total": 822.9645320006966
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 90,
+          "DISCOVERY": 1,
+          "DOCUMENTARY": 5
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": [
+        "habitat",
+        "lunar"
+      ]
+    },
+    {
+      "id": "aerosol",
+      "question": "SAME-R smoke detection",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 2.83723200118402,
+        "retrieval_ms": 130.98540600003616,
+        "classification_ms": 235.21917799916991,
+        "native_execution_ms": 319.1980949995923,
+        "total_ms": 376.5505570008827,
+        "native_timings_ms": {
+          "planning": 119.7721989992715,
+          "kg_execution": 183.51540799994837,
+          "bm25_ranking": 8.40224599960493,
+          "bundle_build": 7.447772000887198,
+          "total": 319.137624999712
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 109,
+          "DISCOVERY": 4,
+          "DOCUMENTARY": 2
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": [
+        "detection",
+        "smoke"
+      ]
+    },
+    {
+      "id": "droplet",
+      "question": "FLEX extinction",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 2.6192870009253966,
+        "retrieval_ms": 127.69845399816404,
+        "classification_ms": 1736.9840949995705,
+        "native_execution_ms": 1707.3313479995704,
+        "total_ms": 1928.9232259998244,
+        "native_timings_ms": {
+          "planning": 121.45247399894288,
+          "kg_execution": 1521.9957789995533,
+          "bm25_ranking": 2.2624140001425985,
+          "bundle_build": 61.25101700126834,
+          "total": 1706.961683999907
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 274,
+          "DISCOVERY": 0,
+          "DOCUMENTARY": 6
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": [
+        "extinction"
+      ]
+    },
+    {
+      "id": "normative",
+      "question": "NASA-STD-6001 requirements",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 2.4952479998319177,
+        "retrieval_ms": 67.50937399920076,
+        "classification_ms": 345.287662001283,
+        "native_execution_ms": 408.253199999308,
+        "total_ms": 415.4110009985743,
+        "native_timings_ms": {
+          "planning": 62.84616599987203,
+          "kg_execution": 345.28413900079613,
+          "bm25_ranking": 0.0047220000851666555,
+          "bundle_build": 0.09614099872123916,
+          "total": 408.23116799947456
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 0,
+          "DISCOVERY": 0,
+          "DOCUMENTARY": 6
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": [
+        "nasa-std-6001",
+        "unparsed_numeric_request"
+      ]
+    },
+    {
+      "id": "unknown",
+      "question": "PMMA unknown-property 83 kPa",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 2.8488699990703026,
+        "retrieval_ms": 69.24223200076085,
+        "classification_ms": 710.1132549996692,
+        "native_execution_ms": 736.3418990007631,
+        "total_ms": 793.2420140004979,
+        "native_timings_ms": {
+          "planning": 64.944628999001,
+          "kg_execution": 659.0187330002664,
+          "bm25_ranking": 1.34159300068859,
+          "bundle_build": 10.937910999928135,
+          "total": 736.2428659998841
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 90,
+          "DISCOVERY": 6,
+          "DOCUMENTARY": 0
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": [
+        "83",
+        "kpa",
+        "unknown-property",
+        "unparsed_numeric_request"
+      ]
+    },
+    {
+      "id": "contradiction",
+      "question": "PMMA oxygen 22.2 % and oxygen 21 %",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 3.5362840008019703,
+        "retrieval_ms": 76.67772799686645,
+        "classification_ms": 988.3680670027388,
+        "native_execution_ms": 980.3743199991004,
+        "total_ms": 1085.1236260004953,
+        "native_timings_ms": {
+          "planning": 65.42771099884703,
+          "kg_execution": 894.8352750012418,
+          "bm25_ranking": 3.570707998733269,
+          "bundle_build": 16.45903200005705,
+          "total": 980.2927259988792
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 90,
+          "DISCOVERY": 0,
+          "DOCUMENTARY": 6
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": []
+    },
+    {
+      "id": "exact",
+      "question": "Saffire I airflow 20 cm/s",
+      "sufficiency": "DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 4.024333000415936,
+        "retrieval_ms": 164.2793350001739,
+        "classification_ms": 83.53670599899488,
+        "native_execution_ms": 240.31360300068627,
+        "total_ms": 252.1330580002541,
+        "native_timings_ms": {
+          "planning": 157.42811400014034,
+          "kg_execution": 80.92338599999493,
+          "bm25_ranking": 1.670065999860526,
+          "bundle_build": 0.27242199939792044,
+          "total": 240.29398799939372
+        },
+        "candidate_counts": {
+          "DIRECT": 2,
+          "RELATED": 0,
+          "DISCOVERY": 4,
+          "DOCUMENTARY": 2
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": []
+    },
+    {
+      "id": "changed",
+      "question": "Saffire I airflow 30 cm/s",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 4.295753000405966,
+        "retrieval_ms": 170.05425699971966,
+        "classification_ms": 74.33630100058508,
+        "native_execution_ms": 237.44531299962546,
+        "total_ms": 249.66171699998085,
+        "native_timings_ms": {
+          "planning": 163.07247700024163,
+          "kg_execution": 71.60636200023873,
+          "bm25_ranking": 1.7920009995577857,
+          "bundle_build": 0.9484900001552887,
+          "total": 237.41933000019344
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 2,
+          "DISCOVERY": 4,
+          "DOCUMENTARY": 2
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": []
+    },
+    {
+      "id": "simulation",
+      "question": "FLEX predicted pressure 100 kPa",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 5.9445039987622295,
+        "retrieval_ms": 177.59388200101967,
+        "classification_ms": 2368.403386999489,
+        "native_execution_ms": 2267.1110430001136,
+        "total_ms": 2629.8124009990715,
+        "native_timings_ms": {
+          "planning": 170.67018499983533,
+          "kg_execution": 2016.6678149998916,
+          "bm25_ranking": 1.9034880006074673,
+          "bundle_build": 77.45037899985618,
+          "total": 2266.6918670001905
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 274,
+          "DISCOVERY": 2,
+          "DOCUMENTARY": 4
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": [
+        "predicted"
+      ]
+    },
+    {
+      "id": "paraphrase",
+      "question": "List SAFFIRE-I using air flow at most 0.2 m/s",
+      "sufficiency": "DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 4.321488000641693,
+        "retrieval_ms": 166.88837499714282,
+        "classification_ms": 73.20237800195173,
+        "native_execution_ms": 228.6923929987097,
+        "total_ms": 244.70315700091305,
+        "native_timings_ms": {
+          "planning": 154.89571299985982,
+          "kg_execution": 70.43401900045865,
+          "bm25_ranking": 3.0725549986527767,
+          "bundle_build": 0.2702840010897489,
+          "total": 228.672571000061
+        },
+        "candidate_counts": {
+          "DIRECT": 2,
+          "RELATED": 0,
+          "DISCOVERY": 1,
+          "DOCUMENTARY": 5
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": []
+    },
+    {
+      "id": "unmapped",
+      "question": "ACME flame behavior",
+      "sufficiency": "NO_DIRECT_EVIDENCE",
+      "metrics": {
+        "interpretation_ms": 3.2147209985851077,
+        "retrieval_ms": 88.88267900147184,
+        "classification_ms": 374.94314499781467,
+        "native_execution_ms": 459.4993830014573,
+        "total_ms": 467.1702910000022,
+        "native_timings_ms": {
+          "planning": 84.42794199982018,
+          "kg_execution": 374.9380809986178,
+          "bm25_ranking": 0.004267001713742502,
+          "bundle_build": 0.10937399929389358,
+          "total": 459.4796639994456
+        },
+        "candidate_counts": {
+          "DIRECT": 0,
+          "RELATED": 0,
+          "DISCOVERY": 4,
+          "DOCUMENTARY": 2
+        },
+        "vectors_enabled": false,
+        "llm_calls": 0
+      },
+      "unresolved": [
+        "acme",
+        "behavior",
+        "flame"
+      ]
+    }
+  ],
+  "unique_evidence_checked": 86,
+  "attribution_errors": [],
+  "false_direct_on_abstention_cases": [],
+  "median_total_ms": 415.4110009985743,
+  "max_total_ms": 2629.8124009990715,
+  "limitations": [
+    "Declared regression cases, not independent expert adjudication",
+    "No claim of improvement against another engine",
+    "Case-level abstention checks do not measure general scientific precision"
+  ]
+}

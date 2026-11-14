@@ -1,0 +1,18 @@
+# /etc/caddy/Caddyfile
+# Caddy sirve el frontend compilado (app/dist) y manda /api/* al motor de evidencia (FastAPI).
+# bootstrap.sh reemplaza FLAME_SITE por tu dominio (HTTPS automático) o por ":80" (solo IP, sin TLS).
+FLAME_SITE {
+	encode zstd gzip
+
+	# Motor de evidencia: solo escucha en 127.0.0.1:8765. El chat usa sondeo (no SSE).
+	handle /api/* {
+		reverse_proxy 127.0.0.1:8765
+	}
+
+	# Frontend estático: index.html (consola) y lab.html (Laboratorio 3D).
+	handle {
+		root * /opt/flame/app/dist
+		try_files {path} {path}.html /index.html
+		file_server
+	}
+}

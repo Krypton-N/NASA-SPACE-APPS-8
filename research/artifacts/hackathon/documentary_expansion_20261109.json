@@ -1,0 +1,34 @@
+[
+  {
+    "source_id": "psi-report-115-science-documents",
+    "path": "data/raw/hackathon-documentation/PSI-115_Science Documents_DataOrganizationDocument.pdf",
+    "canonical_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-115/download?file=PSI-115_Science+Documents_DataOrganizationDocument.pdf&version=2&redirect=false",
+    "source_type": "NASA PSI report",
+    "title": "PSI-115_Science Documents_DataOrganizationDocument.pdf",
+    "sha256": "754cd3b7e1f1334f7de75abbdc0fac2687bc451c76d36245b66a5315c01d7253"
+  },
+  {
+    "source_id": "psi-report-115-reports",
+    "path": "data/raw/hackathon-documentation/PSI-115_Reports_NNX17AF08A_FinalReport.pdf",
+    "canonical_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-115/download?file=PSI-115_Reports_NNX17AF08A_FinalReport.pdf&version=2&redirect=false",
+    "source_type": "NASA PSI report",
+    "title": "PSI-115_Reports_NNX17AF08A_FinalReport.pdf",
+    "sha256": "487108f951ba8ec9042464ae7c70a8190fa63c4b1141f8b1dfe19d697bd9752c"
+  },
+  {
+    "source_id": "psi-report-117-presentations",
+    "path": "data/raw/hackathon-documentation/PSI-117_Presentations_PSI_Users_Group_Cool_Flames_in_Space_03302026.pdf",
+    "canonical_url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-117/download?file=PSI-117_Presentations_PSI_Users_Group_Cool_Flames_in_Space_03302026.pdf&version=1&redirect=false",
+    "source_type": "NASA PSI report",
+    "title": "PSI-117_Presentations_PSI_Users_Group_Cool_Flames_in_Space_03302026.pdf",
+    "sha256": "9b69c81ba20b7a9af49ca899fb7520ae8e2034f9ceadf94fc6ef22910fc417aa"
+  },
+  {
+    "source_id": "grc-flame-design-srd-20100401",
+    "path": "data/raw/hackathon-documentation/Flame_Design_SRD_20100401.pdf",
+    "canonical_url": "https://www1.grc.nasa.gov/wp-content/uploads/Flame_Design_SRD_20100401.pdf",
+    "title": "Flame Design Science Requirements Document, April 1 2010",
+    "source_type": "NASA investigation requirements document",
+    "sha256": "e783fc0da3d388b567654c109b2595a5a74218de6ccd641241f13b091a5448eb"
+  }
+]

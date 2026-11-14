@@ -1,0 +1,145 @@
+{
+  "commit": "02d00164e3baf3c594c749972c51944dce5b492e",
+  "files": [
+    {
+      "path": "data/raw/hackathon-team/data/clean/aerosols.csv",
+      "upstream_path": "data/clean/aerosols.csv",
+      "git_blob": "66e5d1ef06f201276ba4ccb16190b5624ef45ade",
+      "sha256": "d8ac570e8e0e63e0a567f9d7790051b174b1fd7a1dcfad8a08007120ff652eff",
+      "bytes": 22510
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/campaigns.csv",
+      "upstream_path": "data/clean/campaigns.csv",
+      "git_blob": "e5e3d282d073c835b22b5e4caec68a51e277232e",
+      "sha256": "7514d9e32c76ffd8cda602da569c0afba7bd4f37351a32063ffebca1e71b78c1",
+      "bytes": 8582
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/data_dictionary.md",
+      "upstream_path": "data/clean/data_dictionary.md",
+      "git_blob": "eb7e3df54a9f34461fc4ca66b593a8f21b47dcfb",
+      "sha256": "173f53b69ea0e127814c023ea0854ce710357e18c7003f3536d93d43a986ad84",
+      "bytes": 22695
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/droplets.csv",
+      "upstream_path": "data/clean/droplets.csv",
+      "git_blob": "73815702071ab0b47c91a4faf80ca30ee0621496",
+      "sha256": "ca7bf1322dc8e5f93e1223c9393ef0ecd38b4c29872e45abd6e454eeeaa12af5",
+      "bytes": 89478
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/experiments_all.csv",
+      "upstream_path": "data/clean/experiments_all.csv",
+      "git_blob": "0f05487f6fce1644a10af0c8654c4b0655c58dff",
+      "sha256": "e4e07a6ee88f3e613deeb48227853372b8658b7b52525ebc41dba2baf05fa6e2",
+      "bytes": 389069
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/gas_flames.csv",
+      "upstream_path": "data/clean/gas_flames.csv",
+      "git_blob": "3663fe8ff6049ac585cde8eac20f5370af2f774f",
+      "sha256": "3810ccf3059d29abf9e1774ec8d0cf379023b967d2d794fcdc7eff9edc21bb52",
+      "bytes": 368039
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/publications.csv",
+      "upstream_path": "data/clean/publications.csv",
+      "git_blob": "4115dbdea113b976419531f2d9604904eeaef3a0",
+      "sha256": "b1d80fff59f52a98115ffdcdf276543f5bb26ee571c0aac3a25e17f5bfc5129e",
+      "bytes": 87513
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/qc_report.md",
+      "upstream_path": "data/clean/qc_report.md",
+      "git_blob": "1bd2e78666ca94d5268756a633ded223a507b25b",
+      "sha256": "ae97912618e8508c18f91741abb4b93e81f519e06f8d8a2d331883c68b75e0c4",
+      "bytes": 6489
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/sessions.csv",
+      "upstream_path": "data/clean/sessions.csv",
+      "git_blob": "a95a72f7a0060841c8df4c50ecfe8d9c8d8ba325",
+      "sha256": "118eacaa7fe9d1baf1456198aeb03403df58451306413a84ca835b00244b3b65",
+      "bytes": 26264
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/skipped_rows.csv",
+      "upstream_path": "data/clean/skipped_rows.csv",
+      "git_blob": "95c219328f2d771e1f6ff299d377614bf3103dc5",
+      "sha256": "2bc2166f5b11c4e15989e2edecf5f3376d5aadf905824345560d998a2ada2d13",
+      "bytes": 914
+    },
+    {
+      "path": "data/raw/hackathon-team/data/clean/solids.csv",
+      "upstream_path": "data/clean/solids.csv",
+      "git_blob": "29f64795fc27a417e6f67a727480a627575291f6",
+      "sha256": "514f03a659a81f255c76549aade7b3234a91dadde1237f7d599f82b6f8a036c3",
+      "bytes": 73785
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-100_SAFFIRE-III/Experimental table/PSI-100_Experimental table_SAFFIRE-3.csv",
+      "upstream_path": "data/psi/PSI-100_SAFFIRE-III/Experimental table/PSI-100_Experimental table_SAFFIRE-3.csv",
+      "git_blob": "1b678d142c7cffed8525f6e58dc88123ae8228d0",
+      "sha256": "74d31e50e86bee56d7e3c56a58d32de5785acc34854c0b6081522df083d658f6",
+      "bytes": 236
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-101_SAME-R/Experimental table/PSI-101_Experimental table_SAME-R.csv",
+      "upstream_path": "data/psi/PSI-101_SAME-R/Experimental table/PSI-101_Experimental table_SAME-R.csv",
+      "git_blob": "790a5bfb48cd7a4183ae2bbb000db4a12fa877f4",
+      "sha256": "d5cd0a9a182b8badf9bdd1d22f52595125468d8449ef5ad93c378c0975f443b3",
+      "bytes": 5564
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-102_SAME/Experimental table/PSI-102_Experimental table_SAME.csv",
+      "upstream_path": "data/psi/PSI-102_SAME/Experimental table/PSI-102_Experimental table_SAME.csv",
+      "git_blob": "7be54508ea0a21f5a0c3b499b90a6e80c7d06bdc",
+      "sha256": "d596badb840f338e596d03cf1804a96221e427e879eb5166c0c51dab3d9491fd",
+      "bytes": 322
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-25_BASS-II/Experimental table/PSI-25_Experimental table_BASS-II.csv",
+      "upstream_path": "data/psi/PSI-25_BASS-II/Experimental table/PSI-25_Experimental table_BASS-II.csv",
+      "git_blob": "fed969d02a3fc39ddbfba8adaca14782b9b9029e",
+      "sha256": "872a5c3b8dd9137c1c066441d0b360bdbee3268fad36b38d98b53d9eb74d6090",
+      "bytes": 16460
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-26_BASS/Experimental table/PSI-26_Experimental table_BASS.csv",
+      "upstream_path": "data/psi/PSI-26_BASS/Experimental table/PSI-26_Experimental table_BASS.csv",
+      "git_blob": "81bec7758860ce77e6e9d724467e9d55d7f78989",
+      "sha256": "794970236805ec22eb189a7c973c80f0aa71743c3cffb9ab466522d102b78bc6",
+      "bytes": 4603
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-68_FLEX-2/Experimental table/PSI-68_Experimental table_Flex2.csv",
+      "upstream_path": "data/psi/PSI-68_FLEX-2/Experimental table/PSI-68_Experimental table_Flex2.csv",
+      "git_blob": "7ca7f2eac15af934011880aae9ad44d70eabd40c",
+      "sha256": "9836dc238c64d1c3e086093d4d10564ef5332d4b484ade413b4b0670f7bc41b3",
+      "bytes": 1020
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-69_FLEX/Experimental table/PSI-69_Experimental table_FLEX.csv",
+      "upstream_path": "data/psi/PSI-69_FLEX/Experimental table/PSI-69_Experimental table_FLEX.csv",
+      "git_blob": "8013017b0ebe76b774e0212ce840caedbb55db23",
+      "sha256": "74addb771d6ec6765d285721bd35ec1ce3936d104e265f363aeba18c6c25743b",
+      "bytes": 24501
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-98_SAFFIRE-I/Experimental table/PSI-98_Experimental table_SAFFIRE-1.csv",
+      "upstream_path": "data/psi/PSI-98_SAFFIRE-I/Experimental table/PSI-98_Experimental table_SAFFIRE-1.csv",
+      "git_blob": "bb4b7102f578769f6e47189d3adcc733f4927793",
+      "sha256": "c36bedc263eefcb359badfda959c78e550cccb580d22046975e426705316fd2e",
+      "bytes": 464
+    },
+    {
+      "path": "data/raw/hackathon-team/data/psi/PSI-99_SAFFIRE-II/Experimental table/PSI-99_Experimental table_SAFFIRE-2.csv",
+      "upstream_path": "data/psi/PSI-99_SAFFIRE-II/Experimental table/PSI-99_Experimental table_SAFFIRE-2.csv",
+      "git_blob": "7fd61be3a83dfd6104da966612392b40a5c62901",
+      "sha256": "0c78b6ecea3bdc76b0b8b647c9982da04ec9464fa47c998c316971537713dabd",
+      "bytes": 1957
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "source_id": "PSI-142",
+    "path": "data/raw/hackathon-psi/PSI-142_experimental_table.csv",
+    "sha256": "c66d135b0053590d239f06b9e8627d826e3d726b8443fd2cbccc37484b6a8e7f",
+    "url": "https://psi.nasa.gov/geode-py/ws/studies/PSI-142/download"
+  }
+]

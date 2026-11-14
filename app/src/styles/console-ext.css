@@ -1,0 +1,21 @@
+/* Ajustes de la consola científica para alojar las secciones del equipo. */
+
+/* con tres grupos la barra lateral es más alta que una laptop: compacta y con scroll propio */
+.sidebar { overflow-y: auto; overscroll-behavior: contain; padding-top: 24px; }
+.sidebar .sidebar-rule { margin: 18px 10px 16px; }
+.sidebar .sidebar-label { margin-bottom: 8px; }
+.sidebar nav { gap: 3px; }
+.sidebar .nav-link { padding: 10px 14px; }
+.sidebar .sidebar-new { margin: 14px 10px 4px; }
+
+/* vista externa: ocupa todo el alto bajo la barra superior */
+.external-panel { flex: 1; display: flex; min-height: 0; }
+.external-frame {
+  flex: 1;
+  width: 100%;
+  min-height: calc(100dvh - 75px);
+  border: 0;
+  background: #090e19;
+  display: block;
+}
+.external-mode .workspace-footer { display: none; }

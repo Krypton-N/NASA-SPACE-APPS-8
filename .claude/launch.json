@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "flame-app",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "app", "run", "dev", "--", "--port", "5173", "--strictPort"],
+      "port": 5173
+    },
+    {
+      "name": "research-api",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": ["--directory", "research", "run", "python", "scripts/serve_scientific_console.py", "--offline"],
+      "env": { "PYTHONUTF8": "1" },
+      "port": 8765
+    },
+    {
+      "name": "research-api-nvidia",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": ["--directory", "research", "run", "python", "scripts/serve_scientific_console.py"],
+      "env": { "PYTHONUTF8": "1", "NASA_SCIENTIFIC_LLM_PROVIDER": "nvidia" },
+      "port": 8765
+    }
+  ]
+}

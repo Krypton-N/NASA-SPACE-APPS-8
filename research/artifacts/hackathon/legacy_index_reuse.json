@@ -1,0 +1,14 @@
+{
+  "method": "Read-only copy of existing local provenance tables, excluding vectors and model caches",
+  "origin": "/home/liam/NASA/data/index/evidence.sqlite",
+  "target": "data/index/evidence.sqlite",
+  "counts": {
+    "sources": 290,
+    "documents": 295,
+    "passages": 7237,
+    "evidence_refs": 6391,
+    "evidence_locations": 379,
+    "structured_cells": 12758,
+    "document_metadata": 275
+  }
+}

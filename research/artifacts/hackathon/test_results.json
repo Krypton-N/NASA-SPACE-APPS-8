@@ -1,0 +1,106 @@
+{
+  "baseline_complete_in_batches": {
+    "passed": 3431,
+    "errors": 23,
+    "failed": 13,
+    "skipped": 40
+  },
+  "batches": [
+    {
+      "batch": "0",
+      "summary": "654 passed, 23 errors in 13.14s",
+      "failures": [
+        "ERROR tests/test_contextual_end_to_end.py::test_real_native_service_invokes_scope_resolver",
+        "ERROR tests/test_contextual_end_to_end.py::test_public_v2_service_renders_verified_claims_offline",
+        "ERROR tests/test_contextual_end_to_end.py::test_public_v2_conditions_are_not_observed_outcomes",
+        "ERROR tests/test_contextual_end_to_end.py::test_real_observation_joins_material_and_earlier_environment",
+        "ERROR tests/test_contextual_end_to_end.py::test_explicit_terrestrial_query_overrides_default",
+        "ERROR tests/test_contextual_end_to_end.py::test_real_comparison_keeps_gravity_groups_separate",
+        "ERROR tests/test_contextual_end_to_end.py::test_v1_style_baseline_remains_without_context_facts",
+        "ERROR tests/test_contextual_end_to_end.py::test_real_intervention_does_not_acquire_unsourced_gravity",
+        "ERROR tests/test_contextual_end_to_end.py::test_correct_citation_cannot_authorize_wrong_scope[fabricated-id]",
+        "ERROR tests/test_contextual_end_to_end.py::test_correct_citation_cannot_authorize_wrong_scope[wrong-gravity]",
+        "ERROR tests/test_contextual_end_to_end.py::test_correct_citation_cannot_authorize_wrong_scope[wrong-group]",
+        "ERROR tests/test_contextual_end_to_end.py::test_correct_citation_cannot_authorize_wrong_scope[document-scope]",
+        "ERROR tests/test_contextual_end_to_end.py::test_correct_citation_cannot_authorize_wrong_scope[some]",
+        "ERROR tests/test_contextual_end_to_end.py::test_correct_citation_cannot_authorize_wrong_scope[invented-exception]",
+        "ERROR tests/test_contextual_end_to_end.py::test_correct_citation_cannot_authorize_wrong_scope[conditional]",
+        "ERROR tests/test_contextual_end_to_end.py::test_correct_citation_cannot_authorize_wrong_scope[unrelated-run]",
+        "ERROR tests/test_contextual_end_to_end.py::test_unreviewed_context_cannot_publish_canonical_relation",
+        "ERROR tests/test_contextual_end_to_end.py::test_manifest_support_is_source_exact",
+        "ERROR tests/test_contextual_end_to_end.py::test_actual_app_service_routes_v2_and_preserves_citations",
+        "ERROR tests/test_contextual_end_to_end.py::test_verified_context_is_graph_navigable_but_not_canonical",
+        "ERROR tests/test_contextual_end_to_end.py::test_real_ground_exceptions_remain_excluded",
+        "ERROR tests/test_contextual_end_to_end.py::test_real_oxygen_context_is_not_a_local_numeric_rewrite",
+        "ERROR tests/test_contextual_end_to_end.py::test_missing_structured_answer_still_has_contextual_rag"
+      ]
+    },
+    {
+      "batch": "25",
+      "summary": "425 passed in 27.81s",
+      "failures": []
+    },
+    {
+      "batch": "50",
+      "summary": "1 failed, 312 passed, 233 warnings in 5.64s",
+      "failures": [
+        "FAILED tests/test_numerical_fidelity.py::test_table_gravity_without_source_column_is_staged"
+      ]
+    },
+    {
+      "batch": "75",
+      "summary": "2 failed, 490 passed in 68.96s (0:01:08)",
+      "failures": [
+        "FAILED tests/test_phase3c_corrective.py::test_full_projection_is_idempotent_and_keeps_source_context",
+        "FAILED tests/test_projection_provenance.py::test_normalized_projection_never_labels_canonical_units_as_source_reported"
+      ]
+    },
+    {
+      "batch": "100",
+      "summary": "4 failed, 596 passed in 11.45s",
+      "failures": [
+        "FAILED tests/test_reasoning_closure.py::test_real_service_flag_matrix_has_mandatory_gate[False-False]",
+        "FAILED tests/test_reasoning_closure.py::test_real_service_flag_matrix_has_mandatory_gate[True-False]",
+        "FAILED tests/test_reasoning_closure.py::test_real_service_flag_matrix_has_mandatory_gate[False-True]",
+        "FAILED tests/test_reasoning_closure.py::test_real_service_flag_matrix_has_mandatory_gate[True-True]"
+      ]
+    },
+    {
+      "batch": "125",
+      "summary": "5 failed, 266 passed, 72727 warnings in 20.74s",
+      "failures": [
+        "FAILED tests/test_scientific_enrichment.py::test_source_field_roles_and_ambiguities",
+        "FAILED tests/test_scientific_enrichment.py::test_new_fields_are_executable_not_measurements",
+        "FAILED tests/test_scientific_enrichment.py::test_native_intent_does_not_force_safety",
+        "FAILED tests/test_scientific_enrichment.py::test_enrichment_projection_is_idempotent",
+        "FAILED tests/test_scientific_enrichment.py::test_source_labels_can_be_requested_with_spaces"
+      ]
+    },
+    {
+      "batch": "150",
+      "summary": "1 failed, 688 passed, 40 skipped in 128.68s (0:02:08)",
+      "failures": [
+        "FAILED tests/test_targeted_scientific_correction.py::test_source_corrections_keep_units_and_derived_roles"
+      ]
+    }
+  ],
+  "initial_unbatched": "Interrupted near 96% after disk exhaustion; not a pass",
+  "post_repair": "Every formerly failing index-dependent file rerun; exact final gate recorded separately",
+  "remaining_blocker": {
+    "path": "artifacts/phase3c_real_context_evidence_v1.sqlite",
+    "expected_sha256": "b038f8ba09d48419b724f3bd516c6881f46d4c18a7d654a3391691b71e862977",
+    "expected_bytes": 365543424,
+    "tests_affected": 23,
+    "reason": "Historical binary absent; test ATTACH creates empty database. No substitute fabricated."
+  },
+  "post_repair_selected_gate": {
+    "summary": "227 passed in 71.35s",
+    "new_skips": 0,
+    "ruff": "All checks passed",
+    "b8": "Included: 50 passed",
+    "remaining_errors": "23 historical context tests still require the exact missing snapshot; not rerun on substituted data"
+  },
+  "final_snapshot_gate": {
+    "summary": "30 passed in 33.29s"
+  }
+}

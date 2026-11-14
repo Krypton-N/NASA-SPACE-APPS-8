@@ -1,0 +1,12 @@
+[
+  {
+    "source_id": "ntrs-20180005168",
+    "path": "data/raw/hackathon-documentation/NTRS-20180005168.pdf",
+    "canonical_url": "https://ntrs.nasa.gov/api/citations/20180005168/downloads/20180005168.pdf",
+    "source_type": "NASA NTRS presentation",
+    "title": "Saffire: A Novel Approach to Study of Spacecraft Fire Safety Using Un-manned Spacecraft",
+    "sha256": "9ae2e365c850cbd0e136ea4e17cc5ecf68e5ac89d248b3c0a7b7b4bde9e2f402",
+    "pages": 32,
+    "source_scope": "October 2017 presentation; preliminary reported conditions may differ from PSI archive; no source values silently reconciled"
+  }
+]

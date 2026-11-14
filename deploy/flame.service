@@ -1,0 +1,23 @@
+# /etc/systemd/system/flame.service
+# Motor de evidencia (FastAPI + Uvicorn). UN solo proceso: las sesiones y la cola viven en memoria,
+# así que reiniciar borra las conversaciones abiertas. Escucha solo en 127.0.0.1:8765 (Caddy hace de proxy).
+[Unit]
+Description=Flame in Freefall - motor de evidencia (127.0.0.1:8765)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=flame
+Group=flame
+WorkingDirectory=/opt/flame/research
+# Ajustes sin secretos. Las llaves van en /opt/flame/research/.env (modo 600), que lee el propio motor.
+EnvironmentFile=/etc/flame/flame.env
+ExecStart=/opt/flame/research/.venv/bin/python scripts/serve_scientific_console.py
+Restart=always
+RestartSec=5
+TimeoutStopSec=60
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
