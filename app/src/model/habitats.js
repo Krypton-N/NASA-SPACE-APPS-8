@@ -11,7 +11,7 @@ export const HABITATS = [
     tag: "Órbita Terrestre Baja (LEO)",
     risk: "Moderado",
     riskClass: "st-warn",
-    icon: "🛰️",
+    icon: "iss",
     summary:
       "Atmósfera estándar de 1 atm y 21% O₂ (similar al nivel del mar). Sin gravedad, la llama esférica depende exclusivamente de la difusión molecular para obtener oxígeno. Sin embargo, la ventilación forzada de cabina (10–20 cm/s) alimenta la combustión de sólidos.",
     pressure_atm: 1.0,
@@ -41,7 +41,7 @@ export const HABITATS = [
     tag: "Superficie Lunar",
     risk: "Muy Alto",
     riskClass: "st-crit",
-    icon: "🌕",
+    icon: "lunar_base",
     summary:
       "Para reducir el tiempo de desnitrogenación previo a caminatas espaciales (EVA), la NASA planea operar la base lunar a presión intermedia (8.2–10.2 psi / 0.57–0.70 atm) con 32–34% de O₂. El aumento de >40% en oxígeno incrementa drásticamente la inflamabilidad de plásticos, telas y lubricantes.",
     pressure_atm: 0.57,
@@ -71,7 +71,7 @@ export const HABITATS = [
     tag: "Vehículo Móvil Confinado",
     risk: "Crítico",
     riskClass: "st-crit",
-    icon: "🚜",
+    icon: "rover",
     summary:
       "Cabina de volumen ultrarreducido (<15 m³) con atmósfera hiperóxica intermedia (~32% O₂). Los astronautas conviven pegados a bancos de baterías Li-ion, convertidores eléctricos de potencia y sistemas de recirculación de ciclo cerrado.",
     pressure_atm: 0.58,
@@ -100,7 +100,7 @@ export const HABITATS = [
     tag: "Superficie de Marte",
     risk: "Alto",
     riskClass: "st-warn",
-    icon: "🔴",
+    icon: "mars_base",
     summary:
       "Gravedad moderada (0.38 g) y atmósfera interna controlada (~0.70 atm, 28–30% O₂). En el exterior la presión es de solo 0.006 atm (95% CO₂). Peligro añadido: ingreso inevitable de polvo fino de regolito marciano con percloratos a través de las esclusas.",
     pressure_atm: 0.70,
@@ -129,7 +129,7 @@ export const HABITATS = [
     tag: "Traje Presurizado Autónomo",
     risk: "Extremo / Catastrófico",
     riskClass: "st-crit",
-    icon: "👨‍🚀",
+    icon: "eva_suit",
     summary:
       "Para que los astronautas puedan doblar dedos, brazos y piernas en el vacío sin luchar contra la rigidez de la presión, los trajes espaciales se presurizan a solo 4.3 psi (0.29 atm) con 100% de Oxígeno puro. Cualquier evento térmico es una emergencia mortal instantánea.",
     pressure_atm: 0.29,
@@ -158,7 +158,7 @@ export const HABITATS = [
     tag: "Espacio Profundo (Cislunar)",
     risk: "Crítico",
     riskClass: "st-crit",
-    icon: "🚀",
+    icon: "transit_orion",
     summary:
       "A más de 130,000 km de la Tierra (como en el Apolo 13 o la misión Artemis II), no hay evacuación posible. Opera a 1 atm (21% O₂) durante el tránsito cislunar, y despresuriza a 0.7 atm (30% O₂) en fases previas a excursiones lunares.",
     pressure_atm: 1.0,

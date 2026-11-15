@@ -3,6 +3,7 @@ import { nf, t, tr } from "../core/i18n.js";
 import { esc, fmt, FUEL, END } from "../core/dom.js";
 import { drawCoverage } from "../charts/coverage.js";
 import { statusLine } from "./simulator.js";
+import { micon } from "../ui/icons.js";
 import { flexFindings } from "../model/findings.js";
 import { simulate } from "../model/flame.js";
 import { createFlame2D } from "../render/flame2d.js";
@@ -29,7 +30,7 @@ export function mountPanorama(root, data, { go, conditions, gravity }) {
       <div class="habitat-detail-panel">
         <div class="habitat-header">
           <div class="habitat-title-group">
-            <span class="habitat-big-icon" aria-hidden="true">${h.icon}</span>
+            <span class="habitat-big-icon icon-tile ${h.riskClass}" aria-hidden="true">${micon(h.icon)}</span>
             <div>
               <h3 class="habitat-heading">${esc(h.name)}</h3>
               <div class="habitat-subtitle">${esc(h.tag)}</div>
@@ -142,7 +143,7 @@ export function mountPanorama(root, data, { go, conditions, gravity }) {
     <div class="mission-tabs" id="habitats-nav" role="tablist" aria-label="Entornos de misión">
       ${HABITATS.map((h) => `
         <button type="button" role="tab" class="habitat-btn ${h.id === activeHabitatId ? "active" : ""}" data-hid="${h.id}" aria-selected="${h.id === activeHabitatId}">
-          <span class="habitat-btn-icon" aria-hidden="true">${h.icon}</span>
+          <span class="habitat-btn-icon" aria-hidden="true">${micon(h.icon)}</span>
           <span class="habitat-btn-text"><span class="habitat-btn-name">${esc(h.name)}</span><span class="habitat-btn-tag">${esc(h.tag)}</span></span>
           <span class="habitat-dot ${h.riskClass}" title="${esc(h.risk)}"></span>
         </button>`).join("")}
@@ -229,7 +230,7 @@ export function mountPanorama(root, data, { go, conditions, gravity }) {
         ${PILLARS.map((p) => `
           <details class="pillar-card">
             <summary class="pillar-card-head">
-              <span class="pillar-icon" aria-hidden="true">${p.icon}</span>
+              <span class="pillar-icon icon-tile pillar-${p.id}" aria-hidden="true">${micon(p.icon)}</span>
               <span class="pillar-head-text"><span class="pillar-title">${esc(p.name)}</span><span class="pillar-tagline">${esc(p.tagline)}</span></span>
               <span class="pillar-metric-num">${p.metric_highlight.num}</span>
             </summary>

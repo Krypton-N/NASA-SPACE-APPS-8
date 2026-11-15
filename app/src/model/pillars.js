@@ -10,7 +10,7 @@ export const PILLARS = [
     name: "1. Prevención",
     tagline: "Control de Ignición y Selección de Materiales",
     badge: "Primera Línea de Defensa",
-    icon: "🛡️",
+    icon: "prevention",
     summary:
       "Evitar que el fuego se inicie mediante el control riguroso de fuentes térmicas y la selección de materiales certificados para atmósferas enriquecidas con oxígeno.",
     challenge_title: "El desafío: La paradoja de 1 g frente a microgravedad",
@@ -55,7 +55,7 @@ export const PILLARS = [
     name: "2. Detección",
     tagline: "Física del Humo y Falsas Alarmas por Polvo",
     badge: "Alerta Temprana en Cabina",
-    icon: "📡",
+    icon: "detection",
     summary:
       "Identificar partículas de pirólisis y aerosoles antes de que surja una llama abierta, discriminando entre humo real y polvo abrasivo exterior.",
     challenge_title: "El desafío: El humo no sube y el polvo confunde",
@@ -94,7 +94,7 @@ export const PILLARS = [
     name: "3. Supresión",
     tagline: "Agentes Extintores y Extinción Radiativa",
     badge: "Extinción Inmediata",
-    icon: "🧯",
+    icon: "suppression",
     summary:
       "Sofocar el fuego de inmediato sin envenenar a los astronautas ni destruir los filtros del sistema de soporte vital de la nave.",
     challenge_title: "El desafío: No se pueden usar polvos químicos en un hábitat sellado",
