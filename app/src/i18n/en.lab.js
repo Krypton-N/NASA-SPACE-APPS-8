@@ -28,6 +28,8 @@ export default {
   "Velocidad de reproducción": "Playback speed",
   "Condiciones": "Conditions",
   "Mostrar u ocultar las condiciones": "Show or hide the conditions",
+  "Acerca de este laboratorio": "About this lab",
+  "Condiciones personalizadas": "Custom conditions",
   "Cámaras": "Cameras",
   "Miniaturas de las cámaras": "Camera thumbnails",
   "Etiquetas": "Labels",

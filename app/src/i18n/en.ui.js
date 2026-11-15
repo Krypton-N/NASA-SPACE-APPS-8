@@ -238,8 +238,9 @@ export default {
   // ---- Simulador 2D ----
   "Predicción con evidencia": "Evidence-based prediction",
   "¿Qué hace una gota de combustible en estas condiciones?": "What does a fuel droplet do under these conditions?",
-  "El modelo busca los ensayos reales de FLEX más parecidos a las condiciones elegidas y promedia sus resultados. Cada predicción dice en qué ensayos se basa y avisa cuando las condiciones salen de lo que se ha medido.":
-    "The model finds the real FLEX tests closest to the chosen conditions and averages their results. Every prediction states which tests it relies on and warns when the conditions fall outside what has been measured.",
+  "Elige combustible y atmósfera: el modelo promedia los ensayos reales de FLEX más parecidos y avisa cuando sales de lo medido.":
+    "Pick a fuel and an atmosphere: the model averages the closest real FLEX tests and warns you when you leave the measured range.",
+  "Cómo funciona la predicción": "How the prediction works",
   "Cámara de combustión": "Combustion chamber",
   "Animación de la gota y su llama": "Animation of the droplet and its flame",
   "Ley d²: curvas medidas contra predicción": "d² law: measured curves versus prediction",
