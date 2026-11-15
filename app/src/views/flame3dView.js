@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import "../styles/lab3d.css";
 import { esc, fmt, FUEL, END } from "../core/dom.js";
 import { tr } from "../core/i18n.js";

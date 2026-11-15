@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 /**
  * Los Tres Pilares de la Seguridad contra Incendios en la Exploración Espacial.
  * Alineado con la doctrina oficial de la NASA: Prevención, Detección y Supresión,

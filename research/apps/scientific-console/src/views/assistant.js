@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { esc, icon, badge, empty, resultCards } from '../ui.js';
 import { chatTitle, promptCount } from '../chats.js';
 import examplePrompts from '../prompts.json';

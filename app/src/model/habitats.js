@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 /**
  * Entornos de Misión y Hábitats Tripulados para el Reto NASA Space Apps #08.
  * Clasifica presiones, concentraciones de O2, gravedad y riesgos específicos

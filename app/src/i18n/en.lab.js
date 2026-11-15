@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 // Laboratorio 3D: vista (views/flame3dView.js) y contenido (model/lab.js).
 export default {
   // ---- encabezado y barra de herramientas ----

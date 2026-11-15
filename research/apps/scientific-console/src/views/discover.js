@@ -1,3 +1,4 @@
+// AI disclosure: most of this file was rewritten with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { esc, human, icon, badge, loading, empty, errorState, pageHeading, option, evidenceButton, resultCards, sourceText } from '../ui.js';
 import { relationshipGraph } from '../visualizations.js';
 import { investigationOptions } from '../library.js';

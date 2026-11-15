@@ -1,3 +1,4 @@
+// AI disclosure: this file was generated with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 /**
  * Iconos de línea para misiones y pilares (reemplazan a los emojis). Mismo trazo que los iconos
  * de la consola: 24×24, sin relleno, trazo de 1.6 y extremos redondeados; toman el color del texto.

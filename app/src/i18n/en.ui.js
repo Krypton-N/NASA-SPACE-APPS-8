@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 // Interfaz general: encabezado, Panorama, gráficas de FLEX, simulador 2D, biblioteca y «Cómo funciona».
 // Los números de una clave valen como comodines; {a}, {b} son comodines de texto.
 export default {

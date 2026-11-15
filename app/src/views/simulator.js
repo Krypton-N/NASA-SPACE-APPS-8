@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { esc, fmt, ICON, END, FLEX_DOI } from "../core/dom.js";
 import { METRICS } from "../model/knn.js";
 import { createFlame2D } from "../render/flame2d.js";

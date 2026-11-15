@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { el, text } from "../core/svg.js";
 import { bindTip } from "../core/tooltip.js";
 import { cssVar } from "../core/dom.js";
