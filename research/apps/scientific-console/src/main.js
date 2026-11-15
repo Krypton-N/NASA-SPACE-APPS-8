@@ -15,6 +15,7 @@ import { renderNotebook } from './views/notebook.js';
 import { loadChats, saveChats, newChat, loadNotebook, saveNotebook, notebookEntry } from './chats.js';
 import './extensions.css';
 import './workspace.css';
+import './workspace-views.css';
 
 const navigation=[['assistant','Research Assistant'],['investigations','Investigations'],['compare','Compare'],['discover','Discover'],['evidence','Evidence'],['notebook','Notebook']];
 const renderers={assistant:renderAssistant,investigations:renderInvestigations,compare:renderCompare,discover:renderDiscover,evidence:renderEvidence,notebook:renderNotebook};
