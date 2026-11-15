@@ -35,7 +35,28 @@ function historyHTML(state, filter = '') {
     : `<p class="history-empty">${q ? 'No conversation matches.' : 'Your conversations will appear here.'}</p>`;
 }
 function historyPanelHTML(state) {
-  return `<aside class="chat-history" aria-label="Conversation history"><div class="history-head"><span class="eyebrow">CONVERSATIONS</span><button class="button secondary history-new" data-chat-new>${icon('plus')} New chat</button><label class="history-search"><span class="sr-only">Search conversations</span>${icon('search')}<input type="search" id="history-search" placeholder="Search conversations"></label></div><div class="history-list" id="history-list">${historyHTML(state)}</div></aside>`;
+  return `<aside class="chat-history" id="chat-history" aria-label="Conversation history"><div class="history-head"><span class="eyebrow">CONVERSATIONS</span><button class="button secondary history-new" data-chat-new>${icon('plus')} New chat</button><label class="history-search"><span class="sr-only">Search conversations</span>${icon('search')}<input type="search" id="history-search" placeholder="Search conversations"></label></div><div class="history-list" id="history-list">${historyHTML(state)}</div></aside>`;
+}
+
+// Stages the engine reports while it works, shown as a progress list.
+const STAGES = [
+  ['retrieval', 'Finding source evidence'],
+  ['generation', 'Drafting a source-backed explanation'],
+  ['verification', 'Checking statements against their sources'],
+  ['context', 'Reviewing experimental context'],
+  ['publishing', 'Finalizing the response'],
+  ['interpretation', 'Writing the conversational answer'],
+];
+function stepsHTML(stage) {
+  const at = STAGES.findIndex(([key]) => key === stage);
+  return `<ol class="chat-steps">${STAGES.map(([key, label], i) => `<li class="${i < at ? 'done' : i === at ? 'current' : ''}">${i < at ? icon('check') : '<i></i>'}<span>${label}</span></li>`).join('')}</ol>`;
+}
+
+// History panel: open by default on wide screens, remembered per browser.
+const HISTORY_KEY = 'flame.history.open';
+function historyOpen() {
+  try { const v = localStorage.getItem(HISTORY_KEY); if (v !== null) return v === '1'; } catch {}
+  return matchMedia('(min-width: 1280px)').matches;
 }
 
 // Sources the engine has retrieved so far, while it still verifies the answer.
@@ -100,14 +121,15 @@ function messageHTML(message, index) {
   <div class="answer-toolbar"><button class="text-button" data-show-sources="${index}">${icon('evidence')} ${body.citations.length} source references</button><button class="text-button" data-save-note="${index}">${icon('bookmark')} Save to notebook</button>${records[0] ? `<button class="text-button" data-entity="${esc(records[0].id)}">Open research record ${icon('arrow')}</button><button class="text-button" data-compare-record="${esc(records[0].id)}">Compare record ${icon('compare')}</button>` : ''}</div>
   <div class="answer-sources" id="sources-${index}" hidden>${body.citations.map(c=>`<button class="source-reference" data-evidence="${esc(c.evidence_id)}"><span class="source-number">${c.number}</span><span><strong>${esc(c.source?.title || c.document_id)}</strong><small>${esc(c.source?.source_type || 'Registered source')}${c.page ? ' · PDF page '+c.page : ''}</small></span>${icon('chevron')}</button>`).join('')}</div>
   <details class="evidence-details"><summary>Explore the retrieved evidence</summary>${resultCards(body.groups,4) || '<p>No additional evidence groups were returned.</p>'}</details>
-  ${body.suggestions.filter(s=>s.query || s.question).length ? `<div class="followups"><span class="eyebrow">NEXT RESEARCH PATHS</span>${body.suggestions.filter(s=>s.query || s.question).slice(0,3).map(s=>`<button data-ask="${esc(s.query || s.question)}">${badge('EXPLORATORY')}<span>${esc(s.query || s.question)}</span>${icon('arrow')}</button>`).join('')}</div>` : ''}</div></article>`;
+  ${body.suggestions.filter(s=>s.query || s.question).length ? `<div class="followups"><span class="eyebrow">NEXT RESEARCH PATHS</span><div class="followup-list">${body.suggestions.filter(s=>s.query || s.question).slice(0,3).map(s=>`<button data-ask="${esc(s.query || s.question)}" title="Exploratory: a research path to investigate, not a verified finding">${icon('arrow')}<span>${esc(s.query || s.question)}</span></button>`).join('')}</div></div>` : ''}</div></article>`;
 }
 export async function renderAssistant(ctx) {
   const session=ctx.state.session;
   const active=session.messages.length>0;
-  ctx.view(`<div class="assistant-shell"><div class="assistant-layout ${active ? 'has-conversation' : ''}"><div class="conversation" id="conversation" aria-live="polite">
-  ${active ? session.messages.map(messageHTML).join('') : `<section class="assistant-welcome"><div class="orbital-art" aria-hidden="true"><i></i><i></i><i></i><span></span></div><span class="eyebrow orange">MICROGRAVITY COMBUSTION · SCIENTIFIC RESEARCH</span><h1>A better question.<br><span>A clearer understanding.</span></h1><p>Explore what the research actually shows. Ask a question, follow the experimental context, and trace every finding back to its source.</p><div class="welcome-tags"><span>${icon('check')} Original NASA sources</span><span>${icon('discover')} Connected scientific knowledge</span></div></section><div class="prompt-grid">${prompts.map(p=>`<button class="prompt-card" data-ask="${esc(p.text)}"><span class="prompt-icon">${icon(p.icon)}</span><span class="eyebrow">${p.tag}</span><strong>${p.title}</strong><span class="prompt-description">${esc(p.text)}</span>${icon('arrow','prompt-arrow')}</button>`).join('')}</div>`}
-  ${ctx.state.chatBusy ? `<div class="chat-loading" role="status"><span class="loader"></span><div><strong id="chat-progress">${esc(ctx.state.chatProgress || "Preparing your question")}</strong><p>Source context can take a few minutes to review. You can browse while this continues.</p><div id="chat-preview">${previewHTML(ctx.state.chatPreview)}</div></div><button class="text-button" id="stop-waiting">Cancel question</button></div>` : ''}</div>
+  const showHistory=historyOpen();
+  ctx.view(`<div class="assistant-shell ${showHistory ? 'history-open' : ''}"><div class="assistant-layout ${active ? 'has-conversation' : ''}"><div class="chat-bar"><span class="chat-title" title="${esc(active ? chatTitle(session) : 'New conversation')}">${esc(active ? chatTitle(session) : 'New conversation')}</span><div class="chat-bar-actions"><button class="icon-button" data-chat-new-top aria-label="Start a new chat" title="New chat">${icon('plus')}</button><button class="icon-button history-toggle" id="history-toggle" aria-controls="chat-history" aria-expanded="${showHistory}" aria-label="Conversation history" title="Conversation history">${icon('history')}</button></div></div><div class="conversation" id="conversation" aria-live="polite">
+  ${active ? session.messages.map(messageHTML).join('') : `<section class="assistant-welcome"><span class="eyebrow orange">MICROGRAVITY COMBUSTION · SCIENTIFIC RESEARCH</span><h1>A better question. <span>A clearer understanding.</span></h1><p>Ask about an experiment, a measurement or a documented finding. Every statement is checked against an original NASA source you can open.</p><div class="welcome-tags"><span>${icon('check')} Original NASA sources</span><span>${icon('discover')} Connected scientific knowledge</span></div></section><div class="prompt-grid">${prompts.map(p=>`<button class="prompt-card" data-ask="${esc(p.text)}" title="${esc(p.text)}"><span class="prompt-icon">${icon(p.icon)}</span><span class="prompt-text"><span class="eyebrow">${p.tag}</span><strong>${p.title}</strong><span class="prompt-description">${esc(p.text)}</span></span>${icon('arrow','prompt-arrow')}</button>`).join('')}</div>`}
+  ${ctx.state.chatBusy ? `<div class="chat-loading" role="status"><span class="loader"></span><div><strong id="chat-progress">${esc(ctx.state.chatProgress || "Preparing your question")}</strong><div id="chat-steps">${ctx.state.chatStage ? stepsHTML(ctx.state.chatStage) : ''}</div><p>Source context can take a few minutes to review. You can browse while this continues.</p><div id="chat-preview">${previewHTML(ctx.state.chatPreview)}</div></div><button class="text-button" id="stop-waiting">Cancel question</button></div>` : ''}</div>
   <div class="composer-wrap"><form class="composer" id="question-form"><label for="research-question" class="sr-only">Ask a scientific question</label><textarea id="research-question" name="question" rows="2" maxlength="12000" placeholder="Ask about an experiment, a measurement, or a documented finding…" ${ctx.state.chatBusy ? 'disabled' : ''}></textarea><div class="composer-bottom"><span>${icon('evidence')} Grounded in the research library</span><div><label class="detail-select model-select" title="Model that plans and writes; every statement is still checked against its source"><span class="sr-only">Conversation model</span><select name="model" id="model-select"><option value="">Default model</option></select></label><label class="deep-toggle" title="More searches and more evidence per question, with technical detail. Takes longer."><input type="checkbox" name="deep" id="deep-toggle" ${session.deep ? 'checked' : ''}><span>Deep research</span></label><label class="detail-select" ${session.deep ? 'hidden' : ''}><span class="sr-only">Answer detail</span><select name="detail"><option value="standard">Standard detail</option><option value="concise">Concise</option><option value="technical">Technical detail</option></select></label><button class="send-button" type="submit" aria-label="Send scientific question" ${ctx.state.chatBusy ? 'disabled' : ''}>${icon('arrow')}</button></div></div></form><p class="composer-note">Evidence can be incomplete. Related research is not equivalent evidence. <button class="inline-button" data-classifications>Understand the evidence labels</button></p></div></div>${historyPanelHTML(ctx.state)}</div>`);
   const historyList=ctx.root.querySelector('#history-list');
   historyList.addEventListener('click',e=>{
@@ -117,6 +139,11 @@ export async function renderAssistant(ctx) {
   });
   ctx.root.querySelector('#history-search').addEventListener('input',e=>{historyList.innerHTML=historyHTML(ctx.state,e.target.value);});
   ctx.root.querySelector('[data-chat-new]')?.addEventListener('click',()=>ctx.chats.create());
+  ctx.root.querySelector('[data-chat-new-top]')?.addEventListener('click',()=>ctx.chats.create());
+  ctx.root.querySelector('#history-toggle').addEventListener('click',e=>{const shell=ctx.root.querySelector('.assistant-shell');const open=!shell.classList.contains('history-open');shell.classList.toggle('history-open',open);e.currentTarget.setAttribute('aria-expanded',String(open));try{localStorage.setItem(HISTORY_KEY,open?'1':'0');}catch{}});
+  const textarea=ctx.root.querySelector('#research-question');
+  const grow=()=>{textarea.style.height='auto';textarea.style.height=Math.min(textarea.scrollHeight,200)+'px';};
+  textarea.addEventListener('input',grow);
   ctx.root.querySelectorAll('[data-save-note]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.saveNote);const question=session.messages.slice(0,i).reverse().find(m=>m.role==='user')?.text||'';ctx.notebook.add(question,session.messages[i].body);b.disabled=true;b.lastChild.textContent=' Saved';});
   const modelSelect=ctx.root.querySelector('#model-select');
   ctx.models().then(({default:fallback,models})=>{
@@ -151,6 +178,7 @@ export async function renderAssistant(ctx) {
         const labels={retrieval:'Finding source evidence',generation:'Preparing a source-backed explanation',verification:'Checking statements against their sources',context:'Reviewing experimental context',publishing:'Finalizing the response',interpretation:'Writing a conversational answer from the verified sources'};
         ctx.state.chatProgress=progress.status==='queued' ? 'Question queued · position '+progress.queue_position : progress.status==='cancellation_requested' ? 'Cancellation pending · finishing the current review stage' : labels[progress.stage] || 'Consulting the scientific evidence';
         const node=ctx.root.querySelector('#chat-progress');if(node && ctx.state.session===session)node.textContent=ctx.state.chatProgress;
+        if(progress.stage && labels[progress.stage]){ctx.state.chatStage=progress.stage;const steps=ctx.root.querySelector('#chat-steps');if(steps && ctx.state.session===session)steps.innerHTML=stepsHTML(progress.stage);}
         if(Array.isArray(progress.preview) && progress.preview.length){ctx.state.chatPreview=progress.preview;const box=ctx.root.querySelector('#chat-preview');if(box && ctx.state.session===session)box.innerHTML=previewHTML(progress.preview);}
       });
       if(controller.signal.aborted || ctx.state.chatController!==controller || ctx.state.session!==session)return;
@@ -160,7 +188,7 @@ export async function renderAssistant(ctx) {
       if(ctx.state.chatController!==controller || ctx.state.session!==session)return;
       if (error.name==='AbortError') session.messages.push({role:'assistant',text:'Cancellation requested. The review stops at the next safe checkpoint. New questions can wait in the queue.'});
       else { if(error.status===404) session.id=null;session.messages.push({role:'assistant',text:error.message}); }
-    } finally { if(ctx.state.chatController===controller){ctx.state.chatBusy=false;ctx.state.chatController=null;ctx.state.chatProgress=null;ctx.state.chatPreview=null;ctx.save();if(ctx.state.routeKey.startsWith("assistant?"))ctx.rerender();} }
+    } finally { if(ctx.state.chatController===controller){ctx.state.chatBusy=false;ctx.state.chatController=null;ctx.state.chatProgress=null;ctx.state.chatPreview=null;ctx.state.chatStage=null;ctx.save();if(ctx.state.routeKey.startsWith("assistant?"))ctx.rerender();} }
   }
   if(active) {
     const focus=ctx.state.chatBusy ? ctx.root.querySelector('.chat-loading') : [...ctx.root.querySelectorAll('.assistant-message')].at(-1);
