@@ -1,7 +1,10 @@
 import "../styles/lab3d.css";
-import { esc, fmt, FUEL } from "../core/dom.js";
+import { esc, fmt, FUEL, END } from "../core/dom.js";
+import { tr } from "../core/i18n.js";
 import { gravitySwitch } from "../ui/chips.js";
+import { SLIDERS } from "../ui/controls.js";
 import { conditions } from "../state.js";
+import { simQuery, outcome } from "../model/experiments.js";
 import { PRESETS } from "../model/flame.js";
 import { ENVS, HOTSPOTS, VIEWS, LEVELS, STEPS, matchPreset, narrate, stepOf } from "../model/lab.js";
 import { statusLine } from "./simulator.js";
@@ -90,6 +93,12 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
         <aside class="lab-side" id="v3-side" aria-label="Condiciones del ensayo">
           <div class="statusline lab-status" id="v3-cov"></div>
           <section class="lab-side-sec">
+            <div class="lab-side-title"><span>Ensayo real de FLEX</span></div>
+            <select id="v3-test" class="lab-test-select" aria-label="Cargar un ensayo real de FLEX"></select>
+            <button type="button" class="lab-linkbtn" id="v3-nearest" hidden></button>
+            <div class="lab-real" id="v3-real" aria-live="polite" hidden></div>
+          </section>
+          <section class="lab-side-sec">
             <div class="lab-side-title"><span>Escenarios</span><span class="lab-custom" id="v3-custom" hidden>Condiciones personalizadas</span></div>
             <div class="lab-scenes" id="v3-scenes" role="group" aria-label="Escenarios"></div>
           </section>
@@ -135,6 +144,75 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
     else conditions.set({ ...p.q });
   });
 
+  // ---- ensayos reales: cargar las condiciones de un ensayo de FLEX y mostrar cómo terminó de verdad ----
+  const testSel = q("#v3-test");
+  const realBox = q("#v3-real");
+  const nearestBtn = q("#v3-nearest");
+  const flexRows = data.flex.filter((r) => FUEL[r.fuel] && r.o2 != null && r.P != null && r.d0 != null);
+  const optLabel = (r) => `FLEX #${r.n} · ${r.id} · ${Math.round(r.o2 * 100)} % O₂ · ${fmt(r.P)} atm${r.co2 ? ` · ${Math.round(r.co2 * 100)} % CO₂` : ""}${r.he ? ` · ${Math.round(r.he * 100)} % He` : ""}`;
+  testSel.innerHTML = `<option value="">${esc(tr("Elegir un ensayo…"))}</option>` +
+    Object.keys(FUEL).map((f) => `<optgroup label="${esc(tr(FUEL[f].es))}">${flexRows.filter((r) => r.fuel === f).map((r) => `<option value="${esc(r.id)}">${esc(optLabel(r))}</option>`).join("")}</optgroup>`).join("");
+  let loaded = null; // { label, q, real, measured }
+  const sameQ = (a, b) => a && b && a.fuel === b.fuel && SLIDERS.every((s) => Math.abs(a[s.key] - b[s.key]) < 1e-6);
+  function paintReal() {
+    realBox.hidden = !loaded;
+    if (!loaded) return;
+    realBox.innerHTML = loaded.error
+      ? `<span class="dim">${esc(loaded.error)}</span>`
+      : `<b>${esc(loaded.label)}</b><span>Resultado real: ${esc(loaded.real)}</span>${loaded.measured ? `<span class="mono">${esc(loaded.measured)}</span>` : ""}<span class="dim">Compáralo con la predicción del modelo arriba y en la escena.</span>`;
+  }
+  function apply(entry) {
+    loaded = entry;
+    // primero las condiciones: si la gravedad cambiara antes, el repintado vería las anteriores y descartaría el ensayo
+    conditions.set({ ...entry.q });
+    gravity.set({ g: 0 });
+    paintReal();
+    scene?.restart();
+  }
+  function loadFlex(r) {
+    const qq = { fuel: r.fuel };
+    for (const s of SLIDERS) qq[s.key] = Math.min(s.max, Math.max(s.min, r[s.key] ?? 0));
+    testSel.value = r.id;
+    apply({ label: `FLEX #${r.n} · ${r.id}`, q: qq, real: END[r.end] || r.end || "—", measured: r.K != null ? `K = ${fmt(r.K)} mm²/s${r.tb != null ? ` · ${fmt(r.tb, 1)} s` : ""}` : "" });
+  }
+  // uid como en Test Records: «PSI-69:20CAL08»; los de FLEX están en dashboard.json, los demás en experiments.json
+  async function loadUid(uid) {
+    const [acc, id] = uid.split(":");
+    const r = acc === "PSI-69" && flexRows.find((x) => x.id === id);
+    if (r) return loadFlex(r);
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}data/experiments.json`);
+      const db = await res.json();
+      const row = db.rows.find((x) => x.uid === uid);
+      const sim = row ? simQuery(row, SLIDERS) : { why: "Ese ensayo no está en las tablas de PSI." };
+      if (!sim.q) { loaded = { error: sim.why }; paintReal(); return; }
+      testSel.value = "";
+      apply({ label: `${acc} · ${row.test_id}`, q: sim.q, real: outcome(row), measured: row.burning_rate_mm2_s != null ? `K = ${fmt(row.burning_rate_mm2_s)} mm²/s` : "" });
+    } catch {
+      loaded = { error: "No se pudo cargar la tabla de ensayos." };
+      paintReal();
+    }
+  }
+  testSel.addEventListener("change", () => {
+    const r = flexRows.find((x) => x.id === testSel.value);
+    if (r) loadFlex(r);
+  });
+  nearestBtn.addEventListener("click", () => {
+    const r = flexRows.find((x) => x.id === nearestBtn.dataset.id);
+    if (r) loadFlex(r);
+  });
+  function syncReal(sim) {
+    // si el usuario mueve las condiciones, el ensayo cargado deja de aplicar
+    if (loaded && !loaded.error && !sameQ(loaded.q, sim.q)) { loaded = null; testSel.value = ""; paintReal(); }
+    const nb = sim.pr.nb[0]?.r;
+    nearestBtn.hidden = !nb || !!loaded?.label?.endsWith(nb.id);
+    if (nb) {
+      nearestBtn.dataset.id = nb.id;
+      nearestBtn.textContent = tr(`Cargar el ensayo real más parecido: FLEX #${nb.n}`);
+    }
+  }
+  const route = (sub) => { if (sub?.startsWith("test/")) loadUid(sub.slice(5)); };
+
   // ---- telemetría ----
   const tele = q("#v3-tele");
   tele.innerHTML = `
@@ -165,10 +243,12 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
     const env = ENVS[envId];
     stage.dataset.env = envId;
     q("#v3-env").textContent = env.name;
-    q("#v3-place").textContent = custom ? `${env.place} · condiciones personalizadas` : env.place;
+    // nodos separados: el traductor reconoce el lugar completo y la etiqueta por su lado
+    q("#v3-place").innerHTML = custom ? `${esc(env.place)} · <span>condiciones personalizadas</span>` : esc(env.place);
     q("#v3-envtext").innerHTML = `<b>${env.name}.</b> ${aud === "plain" ? env.plain : env.tech}`;
     scenes.querySelectorAll(".lab-scene").forEach((b) => b.setAttribute("aria-pressed", !custom && b.dataset.env === envId));
     q("#v3-custom").hidden = !custom;
+    syncReal(sim);
     q('#v3-steps [data-step="cool"]').hidden = !sim.cool;
 
     q("#v3-cov").innerHTML = statusLine(sim) +
@@ -456,13 +536,15 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
   }
 
   return {
-    async enter() {
+    async enter(sub) {
       active = true;
       q('[data-slot="controls"]').appendChild(controls);
       paintStatic(scenario.get());
       unsub = scenario.subscribe(paintStatic);
+      route(sub);
       await start();
     },
+    route,
     leave() {
       active = false;
       unsub?.();

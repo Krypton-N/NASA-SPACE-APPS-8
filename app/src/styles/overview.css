@@ -121,3 +121,51 @@
 .ov-inventory > p { margin: 0 18px 10px; }
 .ov-inventory .tablewrap { border: 0; border-top: 1px solid var(--line); border-radius: 0; }
 .inv-rack { color: var(--ink); font-weight: 500; }
+
+/* ---------- Mission Dashboard ---------- */
+.dash-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; }
+.dash-head .ov-title { font-size: clamp(22px, 2.2vw, 28px); }
+.dash-head .lede { font-size: 13.5px; margin-top: 6px; max-width: 70ch; color: var(--muted); }
+.dash-head .hero-cta { margin: 0; }
+
+.mission-tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.mission-tabs .habitat-btn { grid-template-columns: 22px minmax(0, 1fr) 9px; padding: 9px 10px; gap: 8px; }
+.mission-tabs .habitat-btn-icon { font-size: 16px; }
+.mission-tabs .habitat-btn-name { font-size: 12.5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mission-tabs .habitat-btn-tag { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 1200px) { .mission-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .mission-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.dash-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 400px); gap: 14px; align-items: start; }
+.dash-grid .habitat-detail-panel { margin: 0; }
+.dash-side, .dash-main { display: grid; gap: 14px; min-width: 0; }
+.dash-side { position: sticky; top: 16px; }
+.dash-map .chart { max-height: 300px; }
+.dash-pred, .dash-map { display: grid; gap: 12px; padding: 16px; }
+.dash-pred-head { display: grid; gap: 2px; }
+.dash-pred h3, .dash-map h3 { font-size: 15px; margin: 0; }
+.dash-pred-body { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 14px; align-items: center; }
+.dash-pred .porthole { width: 112px; }
+.dash-out { display: grid; gap: 6px; }
+.dash-out .out { padding: 8px 10px; gap: 1px; grid-template-columns: 1fr auto; align-items: baseline; }
+.dash-out .out .lbl { grid-column: 1 / -1; }
+.dash-out .out b { font-size: 18px; }
+.dash-out .out small { font-size: 11px; text-align: right; }
+.dash-pred .statusline .dim.small { font-size: 12px; line-height: 1.5; }
+.dash-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.dash-actions .btn { flex: 1 1 auto; justify-content: center; }
+#dash-nb { margin: 0; line-height: 1.6; }
+#dash-nb .ov-link { font-size: 12.5px; }
+.dash-map .chart { width: 100%; height: auto; }
+.dash-map p { margin: 0; }
+@media (max-width: 1100px) { .dash-grid { grid-template-columns: 1fr; } .dash-side { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } }
+
+.dash-ask { display: grid; gap: 8px; padding: 16px 18px; }
+.dash-ask label { font: 600 14px/1.3 var(--f-display); }
+.dash-ask-row { display: flex; gap: 8px; }
+.dash-ask-row input {
+  flex: 1; min-width: 0; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line-2);
+  background: rgba(0, 0, 0, 0.25); color: var(--ink); font: 14px var(--f-body);
+}
+.dash-ask-row input:focus { outline: none; border-color: var(--accent); }
+.dash-ask p { margin: 0; }

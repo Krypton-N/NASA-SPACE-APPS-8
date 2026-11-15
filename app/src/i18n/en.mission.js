@@ -1,6 +1,34 @@
 // Mission Overview: hábitats (model/habitats.js), pilares (model/pillars.js), hardware del inventario
 // (data/dashboard.json) y los textos del panel compacto (views/panorama.js).
 export default {
+  // ---- Mission Dashboard ----
+  "Panel de misión": "Mission dashboard",
+  "Elige un entorno de misión: su riesgo de incendio, si los ensayos en órbita cubren su atmósfera y qué predice el modelo.":
+    "Pick a mission environment to see its fire risk, whether orbital tests cover its atmosphere, and what the model predicts.",
+  "Predicción del modelo": "Model prediction",
+  "Gota de combustible ardiendo en esta atmósfera": "Fuel droplet burning in this atmosphere",
+  "Ver en el simulador": "Open in the simulator",
+  "Ensayo real más cercano:": "Closest real test:",
+  "Cargarlo en el laboratorio 3D": "Load it in the 3D lab",
+  "¿Hay ensayos para esta atmósfera?": "Are there tests for this atmosphere?",
+  "Mapa de cobertura de ensayos FLEX con la atmósfera de la misión": "Coverage map of FLEX tests with the mission atmosphere",
+  "Celdas punteadas: combinaciones de O₂ y presión sin ningún ensayo de FLEX.": "Dotted cells: O₂ and pressure combinations with no FLEX test.",
+  "Pregunta al asistente sobre esta misión": "Ask the assistant about this mission",
+  "Preguntar": "Ask",
+  "El asistente responde con evidencia de NASA y verifica cada afirmación contra su fuente.": "The assistant answers with NASA evidence and checks every statement against its source.",
+  "¿Qué evidencia de NASA hay sobre el riesgo de incendio en {nm}, con {ox} % de O₂ y {pr} atm?": "What NASA evidence is there on fire risk in {nm}, at {ox}% O₂ and {pr} atm?",
+  "{a} (fuera del mapa)": "{a} (off the map)",
+
+  // ---- laboratorio: ensayo real ----
+  "Ensayo real de FLEX": "Real FLEX test",
+  "Cargar un ensayo real de FLEX": "Load a real FLEX test",
+  "Elegir un ensayo…": "Choose a test…",
+  "Resultado real: {a}": "Actual outcome: {a}",
+  "Compáralo con la predicción del modelo arriba y en la escena.": "Compare it with the model prediction above and in the scene.",
+  "Cargar el ensayo real más parecido: FLEX #1": "Load the closest real test: FLEX #1",
+  "Ese ensayo no está en las tablas de PSI.": "That test is not in the PSI tables.",
+  "No se pudo cargar la tabla de ensayos.": "Could not load the test table.",
+
   // ---- panel compacto ----
   "Experimentos de combustión de la Estación Espacial reunidos en un solo lugar. Cada cifra enlaza a su tabla o documento de NASA.":
     "Space Station combustion experiments gathered in one place. Every figure links to its NASA table or document.",

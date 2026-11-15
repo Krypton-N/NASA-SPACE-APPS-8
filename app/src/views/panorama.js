@@ -1,13 +1,14 @@
 import "../styles/overview.css";
-import { nf } from "../core/i18n.js";
-import { esc, fmt } from "../core/dom.js";
+import { nf, t, tr } from "../core/i18n.js";
+import { esc, fmt, FUEL, END } from "../core/dom.js";
+import { drawCoverage } from "../charts/coverage.js";
+import { statusLine } from "./simulator.js";
 import { flexFindings } from "../model/findings.js";
 import { simulate } from "../model/flame.js";
 import { createFlame2D } from "../render/flame2d.js";
 import { HABITATS } from "../model/habitats.js";
 import { PILLARS } from "../model/pillars.js";
 
-const HERO_Q = { fuel: "Heptane", o2: 0.21, P: 1.0, co2: 0, he: 0, d0: 3.0 };
 
 export function mountPanorama(root, data, { go, conditions, gravity }) {
   const inv = data.inventory;
@@ -86,7 +87,6 @@ export function mountPanorama(root, data, { go, conditions, gravity }) {
 
         <div class="habitat-footer-actions">
           <button type="button" class="btn" id="btn-explore-habitat">Explorar ensayos</button>
-          <button type="button" class="btn primary" id="btn-sim-habitat">Simular atmósfera (${h.o2_pct}% O₂, ${h.pressure_atm} atm)</button>
         </div>
       </div>`;
   }
@@ -128,20 +128,60 @@ export function mountPanorama(root, data, { go, conditions, gravity }) {
   ];
 
   root.innerHTML = `
-    <div class="ov-head">
-      <div class="ov-intro">
-        <h1 class="ov-title">Cómo arde el fuego <span class="flame">sin gravedad</span></h1>
-        <p class="lede">Experimentos de combustión de la Estación Espacial reunidos en un solo lugar. Cada cifra enlaza a su tabla o documento de NASA.</p>
-        <div class="hero-cta">
-          <button type="button" class="btn primary" data-go="datos">Explorar los ensayos</button>
-          <button type="button" class="btn" data-go="simulador">Probar el simulador</button>
-        </div>
+    <div class="dash-head">
+      <div>
+        <h1 class="ov-title">Panel de misión</h1>
+        <p class="lede">Elige un entorno de misión: su riesgo de incendio, si los ensayos en órbita cubren su atmósfera y qué predice el modelo.</p>
       </div>
-      <figure class="porthole-wrap ov-porthole">
-        <div class="porthole" id="porthole"><canvas id="hero-flame" aria-label="Gota de heptano ardiendo en microgravedad"></canvas></div>
-        <figcaption class="porthole-caption">Gota de <b>heptano</b> de 3 mm · 21 % O₂ · 1 atm<br><span class="dim">predicción a partir de los ensayos de FLEX</span></figcaption>
-      </figure>
+      <div class="hero-cta">
+        <button type="button" class="btn" data-go="datos">Explorar los ensayos</button>
+        <button type="button" class="btn" data-go="simulador">Probar el simulador</button>
+      </div>
     </div>
+
+    <div class="mission-tabs" id="habitats-nav" role="tablist" aria-label="Entornos de misión">
+      ${HABITATS.map((h) => `
+        <button type="button" role="tab" class="habitat-btn ${h.id === activeHabitatId ? "active" : ""}" data-hid="${h.id}" aria-selected="${h.id === activeHabitatId}">
+          <span class="habitat-btn-icon" aria-hidden="true">${h.icon}</span>
+          <span class="habitat-btn-text"><span class="habitat-btn-name">${esc(h.name)}</span><span class="habitat-btn-tag">${esc(h.tag)}</span></span>
+          <span class="habitat-dot ${h.riskClass}" title="${esc(h.risk)}"></span>
+        </button>`).join("")}
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-main">
+        <div id="habitat-detail-slot"></div>
+        <section class="panel dash-map">
+          <h3>¿Hay ensayos para esta atmósfera?</h3>
+          <svg class="chart" id="dash-map" viewBox="0 0 560 330" role="img" aria-label="Mapa de cobertura de ensayos FLEX con la atmósfera de la misión"></svg>
+          <p class="dim small">Celdas punteadas: combinaciones de O₂ y presión sin ningún ensayo de FLEX.</p>
+        </section>
+      </div>
+      <aside class="dash-side">
+        <section class="panel dash-pred">
+          <div class="dash-pred-head"><h3>Predicción del modelo</h3><span class="dim small mono" id="dash-q"></span></div>
+          <div class="dash-pred-body">
+            <div class="porthole" id="porthole"><canvas id="hero-flame" aria-label="Gota de combustible ardiendo en esta atmósfera"></canvas></div>
+            <div class="dash-out" id="dash-out"></div>
+          </div>
+          <div class="statusline" id="dash-cov"></div>
+          <div class="dash-actions">
+            <button type="button" class="btn primary" id="dash-3d">Abrir en el laboratorio 3D</button>
+            <button type="button" class="btn" id="dash-2d">Ver en el simulador</button>
+          </div>
+          <p class="dim small" id="dash-nb"></p>
+        </section>
+      </aside>
+    </div>
+
+    <form class="panel dash-ask" id="dash-ask">
+      <label for="dash-ask-input">Pregunta al asistente sobre esta misión</label>
+      <div class="dash-ask-row">
+        <input id="dash-ask-input" type="text" maxlength="600" autocomplete="off">
+        <button type="submit" class="btn primary">Preguntar</button>
+      </div>
+      <p class="dim small">El asistente responde con evidencia de NASA y verifica cada afirmación contra su fuente.</p>
+    </form>
 
     <div class="kpis">
       ${[
@@ -177,24 +217,6 @@ export function mountPanorama(root, data, { go, conditions, gravity }) {
             <details class="more"><summary>Evidencia</summary><p>${x.p}</p><div class="evidence">${x.ev}</div></details>
             <button type="button" class="ov-link" data-problem="${i}">${x.link}</button>
           </article>`).join("")}
-      </div>
-    </section>
-
-    <section class="ov-sec">
-      <div class="section-head">
-        <h2>Seguridad contra incendios en hábitats tripulados</h2>
-        <p class="lede">Cada entorno de misión impone presión, O₂ y gravedad distintos. Elige uno para ver su riesgo y simular su atmósfera.</p>
-      </div>
-      <div class="habitats-wrap">
-        <div class="habitats-nav" id="habitats-nav" role="tablist" aria-label="Entornos de misión">
-          ${HABITATS.map((h) => `
-            <button type="button" role="tab" class="habitat-btn ${h.id === activeHabitatId ? "active" : ""}" data-hid="${h.id}" aria-selected="${h.id === activeHabitatId}">
-              <span class="habitat-btn-icon" aria-hidden="true">${h.icon}</span>
-              <span class="habitat-btn-text"><span class="habitat-btn-name">${esc(h.name)}</span><span class="habitat-btn-tag">${esc(h.tag)}</span></span>
-              <span class="habitat-dot ${h.riskClass}" title="${esc(h.risk)}"></span>
-            </button>`).join("")}
-        </div>
-        <div id="habitat-detail-slot"></div>
       </div>
     </section>
 
@@ -237,48 +259,66 @@ export function mountPanorama(root, data, { go, conditions, gravity }) {
       <div class="tablewrap"><table class="inv" id="inv"></table></div>
     </details>`;
 
-  // Render inicial del hábitat activo
+  // ---- misión elegida: ficha, predicción, mapa de cobertura y pregunta sugerida ----
   const detailSlot = root.querySelector("#habitat-detail-slot");
   const navContainer = root.querySelector("#habitats-nav");
+  const askInput = root.querySelector("#dash-ask-input");
+  let askEdited = false;
+  askInput.addEventListener("input", () => { askEdited = true; });
+  let currentSim = null;
+  let current = HABITATS[0];
+
+  function paintPrediction(h) {
+    const sim = simulate(flex, h.preset);
+    currentSim = sim;
+    const { pr, tBurn, ext, dEnd } = sim;
+    root.querySelector("#dash-q").textContent = `${FUEL[h.preset.fuel]?.es || h.preset.fuel} · ${Math.round(h.preset.o2 * 100)} % O₂ · ${fmt(h.preset.P)} atm · ${fmt(h.preset.d0, 1)} mm`;
+    root.querySelector("#dash-out").innerHTML = [
+      ["Tasa de quemado", fmt(pr.K), `± ${fmt(pr.sd)} mm²/s`],
+      ["Tiempo de llama", fmt(tBurn, 1), "segundos · ley d²"],
+      ["Prob. de extinción", `${Math.round(pr.pExt * 100)} %`, ext ? `se apaga a ~${fmt(dEnd, 1)} mm` : "arde hasta consumirse"],
+    ].map(([l, b, s]) => `<div class="out"><span class="lbl">${l}</span><b>${b}</b><small>${s}</small></div>`).join("");
+    root.querySelector("#dash-cov").innerHTML = statusLine(sim);
+    const nb = pr.nb[0]?.r;
+    root.querySelector("#dash-nb").innerHTML = nb
+      ? `Ensayo real más cercano: <b>FLEX #${nb.n}</b> · <span class="mono">${esc(nb.id)}</span> · <span>${esc(END[nb.end] || nb.end)}</span> <button type="button" class="ov-link" id="dash-nb-3d">Cargarlo en el laboratorio 3D</button>`
+      : "";
+    root.querySelector("#dash-nb-3d")?.addEventListener("click", () => go("lab3d", `test/PSI-69:${nb.id}`));
+    drawCoverage(root.querySelector("#dash-map"), flex, [{ o2: h.o2_pct / 100, P: h.pressure_atm, label: h.name }]);
+    if (!askEdited) askInput.value = t("¿Qué evidencia de NASA hay sobre el riesgo de incendio en {nm}, con {ox} % de O₂ y {pr} atm?", { nm: tr(h.name), ox: h.o2_pct, pr: fmt(h.pressure_atm) });
+  }
+
+  function useMission(h, view) {
+    if (conditions && h.preset) conditions.set({ ...h.preset });
+    if (gravity && typeof h.gravity_mode === "number") gravity.set({ g: h.gravity_mode });
+    go("simulador", view);
+  }
 
   function updateHabitatView(id) {
     activeHabitatId = id;
     const h = HABITATS.find((x) => x.id === id) || HABITATS[0];
+    current = h;
     detailSlot.innerHTML = renderHabitatDetail(h);
-
     navContainer.querySelectorAll(".habitat-btn").forEach((b) => {
       b.classList.toggle("active", b.dataset.hid === id);
       b.setAttribute("aria-selected", b.dataset.hid === id);
     });
-
-    // Eventos dentro de la tarjeta de hábitat
-    detailSlot.querySelector("#btn-sim-habitat")?.addEventListener("click", () => {
-      if (conditions && h.preset) {
-        conditions.set({ ...h.preset });
-      }
-      if (gravity && typeof h.gravity_mode === "number") {
-        gravity.set({ g: h.gravity_mode });
-      }
-      go("simulador");
-    });
-
-    detailSlot.querySelector("#btn-explore-habitat")?.addEventListener("click", () => {
-      go("datos", "ensayos");
-    });
-
-    detailSlot.querySelectorAll(".habitat-inv-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        go("datos", "ensayos");
-      });
-    });
+    detailSlot.querySelector("#btn-explore-habitat")?.addEventListener("click", () => go("datos", "ensayos"));
+    detailSlot.querySelectorAll(".habitat-inv-card").forEach((card) => card.addEventListener("click", () => go("datos", "ensayos")));
+    paintPrediction(h);
   }
 
   updateHabitatView(activeHabitatId);
-
   navContainer.addEventListener("click", (e) => {
     const btn = e.target.closest(".habitat-btn");
-    if (!btn) return;
-    updateHabitatView(btn.dataset.hid);
+    if (btn) updateHabitatView(btn.dataset.hid);
+  });
+  root.querySelector("#dash-3d").addEventListener("click", () => useMission(current));
+  root.querySelector("#dash-2d").addEventListener("click", () => useMission(current, "2d"));
+  root.querySelector("#dash-ask").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const question = askInput.value.trim();
+    if (question) go("asistente", question);
   });
 
   root.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => go(b.dataset.go)));
@@ -311,8 +351,7 @@ export function mountPanorama(root, data, { go, conditions, gravity }) {
       </tr>`).join("") + "</tbody>";
 
   // Llama de la ventanilla
-  const heroSim = simulate(flex, HERO_Q);
-  const flame = createFlame2D(root.querySelector("#hero-flame"), { getSim: () => heroSim, scale: 1.5, bg: "#020309", frac: 0.45 });
+  const flame = createFlame2D(root.querySelector("#hero-flame"), { getSim: () => currentSim, scale: 1.2, bg: "#020309", frac: 0.45 });
   let active = false;
   let visible = true;
   const io = new IntersectionObserver(([e]) => {

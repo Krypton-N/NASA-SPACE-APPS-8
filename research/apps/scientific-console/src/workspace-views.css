@@ -95,7 +95,11 @@
 .rec-material { color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rec-keys { display: flex; flex-wrap: wrap; gap: 4px 14px; font-family: var(--mono); font-size: var(--fs-sm); color: #d3deec; min-width: 0; }
 .kv small { font-family: var(--sans); font-size: 10.5px; color: #7f93ad; }
+.rec-end { display: flex; align-items: center; gap: 6px; }
 .rec-end .chip { font-size: var(--fs-xs); padding: 2px 8px; }
+.rec-3d { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; border: 1px solid #4a6f9e; background: #1d3150; color: #cfe2ff; flex-shrink: 0; }
+.rec-3d:hover { background: #2a4670; }
+.rec-3d .icon { width: 14px; height: 14px; }
 .record-card .record-body { padding: var(--space-3) 14px var(--space-4); background: #0e1828; }
 .record-card .record-body > p { margin-bottom: 6px; }
 .record-card .card-actions { justify-content: flex-start; gap: var(--space-4); margin-top: var(--space-2); }

@@ -9,6 +9,12 @@ import "./styles/console-ext.css";
 
 const SECTIONS = [
   {
+    // panel principal: va arriba de la barra lateral y es la página de inicio
+    label: "MISSION",
+    top: true,
+    items: [{ key: "overview", label: "Mission Dashboard", icon: "overview" }],
+  },
+  {
     label: "SIMULATION LAB",
     items: [
       { key: "lab3d", label: "3D Laboratory", icon: "lab3d" },
@@ -18,7 +24,6 @@ const SECTIONS = [
   {
     label: "MISSION DATA",
     items: [
-      { key: "overview", label: "Mission Overview", icon: "overview" },
       { key: "flex", label: "FLEX Charts", icon: "flex" },
       { key: "records", label: "Test Records", icon: "records" },
     ],
@@ -43,4 +48,4 @@ function onExternal(key, params, panel) {
   frame.contentWindow.location.hash = hash;
 }
 
-mountScientificConsole(document.querySelector("#app"), { sections: SECTIONS, onExternal });
+mountScientificConsole(document.querySelector("#app"), { sections: SECTIONS, onExternal, home: "overview" });

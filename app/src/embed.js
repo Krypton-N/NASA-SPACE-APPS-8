@@ -37,7 +37,7 @@ const ROUTES = {
     return part === "ensayos" ? ["records", rest.join("/") || null] : ["flex", null];
   },
   simulador: (sub) => [sub === "2d" ? "simulator" : "lab3d", null],
-  asistente: () => ["assistant", null],
+  asistente: (sub) => ["assistant", sub || null],
 };
 
 const embedded = window.parent !== window;
@@ -45,7 +45,8 @@ const embedded = window.parent !== window;
 /** Abre una vista: dentro de la consola cambia la dirección de la consola; suelta, la de esta página. */
 function go(id, sub = null) {
   const [key, rest] = (ROUTES[id] || (() => [id, sub]))(sub);
-  const query = rest ? `?sub=${encodeURIComponent(rest)}` : "";
+  // al asistente se le manda una pregunta; a las demás vistas, una subruta
+  const query = rest ? `?${key === "assistant" ? "ask" : "sub"}=${encodeURIComponent(rest)}` : "";
   if (embedded) {
     try {
       window.parent.location.hash = `#/${key}${query}`;
