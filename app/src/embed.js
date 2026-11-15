@@ -89,6 +89,7 @@ async function boot() {
       views[current].el.hidden = true;
     }
     current = key;
+    document.body.dataset.view = key || "idle"; // el CSS distingue el laboratorio (sin scroll) del resto
     if (!key) return;
     if (!views[key]) {
       const el = document.createElement("section");

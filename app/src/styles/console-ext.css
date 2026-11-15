@@ -1,21 +1,21 @@
 /* Ajustes de la consola científica para alojar las secciones del equipo. */
 
-/* con tres grupos la barra lateral es más alta que una laptop: compacta y con scroll propio */
-.sidebar { overflow-y: auto; overscroll-behavior: contain; padding-top: 24px; }
-.sidebar .sidebar-rule { margin: 18px 10px 16px; }
-.sidebar .sidebar-label { margin-bottom: 8px; }
-.sidebar nav { gap: 3px; }
-.sidebar .nav-link { padding: 10px 14px; }
-.sidebar .sidebar-new { margin: 14px 10px 4px; }
+/* con tres grupos la barra lateral puede ser más alta que una laptop: scroll propio (salvo en riel) */
+.sidebar { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 
-/* vista externa: ocupa todo el alto bajo la barra superior */
+/* vista externa: el iframe ocupa exactamente el alto bajo la barra superior */
+.external-mode main { display: none; }
 .external-panel { flex: 1; display: flex; min-height: 0; }
 .external-frame {
   flex: 1;
   width: 100%;
-  min-height: calc(100dvh - 75px);
+  height: calc(100dvh - var(--topbar-h, 56px));
   border: 0;
   background: #090e19;
   display: block;
 }
+.external-mode .workspace { height: 100dvh; overflow: hidden; }
 .external-mode .workspace-footer { display: none; }
+@media (max-width: 900px) {
+  .external-frame { height: calc(100dvh - 52px); }
+}
