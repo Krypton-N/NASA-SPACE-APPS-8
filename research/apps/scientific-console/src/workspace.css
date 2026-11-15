@@ -239,5 +239,13 @@ button.chip:hover, a.chip:hover { border-color: #5b80b0; color: var(--text); }
   .assistant-shell.history-open { grid-template-columns: minmax(0, 1fr); }
   .chat-history { max-height: 280px; }
 }
+@media (max-width: 620px) {
+  .prompt-icon { position: static; }
+  .prompt-card .eyebrow, .assistant-welcome > .eyebrow { font-size: 10px; }
+  .prompt-card strong { font-size: 13.5px; }
+  .prompt-description { font-size: var(--fs-sm); }
+  .welcome-tags { font-size: var(--fs-xs); }
+  .assistant-welcome h1 { font-size: 22px; line-height: 1.35; }
+}
 .assistant-layout:not(.has-conversation) .conversation { margin-block: auto; }
 .assistant-layout:not(.has-conversation) .composer-wrap { margin-top: 0; }
