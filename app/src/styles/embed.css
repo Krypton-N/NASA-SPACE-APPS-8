@@ -4,12 +4,63 @@ body.embed {
   background: var(--space);
 }
 body.embed main {
-  padding-block: 30px 60px;
+  padding-block: 22px 48px;
 }
 body.embed .wrap {
   max-width: 1360px;
-  padding-inline: clamp(16px, 3vw, 38px);
+  padding-inline: clamp(16px, 2.4vw, 32px);
 }
 body.embed .msg-load {
   padding: 40px 0;
+}
+body.embed .view { gap: 22px; }
+
+/* encabezado compacto, igual que el de la consola: título y una línea */
+body.embed .section-head .eyebrow { display: none; }
+body.embed .section-head h2 { font-size: 22px; line-height: 1.3; letter-spacing: -0.01em; margin: 0; }
+body.embed .section-head h2 br { display: none; }
+body.embed .section-head .lede { font-size: 13.5px; line-height: 1.6; margin-top: 6px; max-width: 90ch; color: var(--muted); }
+
+/* columna de condiciones con título, fija al hacer scroll */
+.sim-side { position: sticky; top: 16px; display: grid; gap: 8px; }
+.side-title { font: 500 10.5px/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-left: 2px; }
+.sim-side .controls { gap: 14px; }
+
+/* bloques plegables para notas largas */
+details.more { border-top: 1px solid var(--line); padding-top: 8px; }
+details.more > summary { cursor: pointer; font-size: 12.5px; color: var(--ink-2); padding: 4px 0; }
+details.more > summary:hover { color: var(--ink); }
+details.more[open] > summary { margin-bottom: 6px; }
+
+/* botón ⓘ con explicación emergente */
+.info-pop { position: relative; display: inline-flex; }
+.info-pop > button {
+  display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  border: 1px solid var(--line-2); background: transparent; color: var(--ink-2); cursor: pointer; font: 600 12px var(--f-mono);
+}
+.info-pop > button:hover, .info-pop > button[aria-expanded="true"] { border-color: var(--accent); color: var(--ink); }
+.info-pop > div {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; width: min(420px, 80vw);
+  padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(10, 15, 28, 0.97);
+  box-shadow: 0 20px 50px -20px #000; font-size: 13px; line-height: 1.6; color: var(--ink-2);
+}
+.info-pop > div ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+
+/* FLEX Charts: filtros a la vista al hacer scroll, guía plegable */
+body.embed[data-view="flex"] .filters {
+  position: sticky; top: 0; z-index: 4; padding: 10px 0; margin-top: -10px;
+  background: linear-gradient(180deg, var(--space) 80%, rgba(9, 14, 25, 0));
+}
+details.how-to > summary { cursor: pointer; font: 600 14px/1.3 var(--f-display); color: var(--ink); list-style: none; }
+details.how-to > summary::-webkit-details-marker { display: none; }
+details.how-to > summary::before { content: "▸ "; color: var(--muted); }
+details.how-to[open] > summary::before { content: "▾ "; }
+
+/* Test Records: la lista fija se calcula con el alto del iframe, no con la barra que ya no existe */
+body.embed .exp-list { top: 16px; max-height: calc(100dvh - 32px); }
+body.embed .exp-item { padding: 8px 10px; }
+.exp-item-hw { font: 11px/1.3 var(--f-mono); color: #7fb4e8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .sim-side { position: static; }
 }

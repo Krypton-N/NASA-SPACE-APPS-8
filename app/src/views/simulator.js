@@ -14,10 +14,10 @@ export function mountSimulator(root, data, { controls, scenario, gravity }) {
     <div class="section-head">
       <div class="eyebrow">Predicción con evidencia</div>
       <h2>¿Qué hace una gota de combustible en estas condiciones?</h2>
-      <p class="lede">El modelo busca los ensayos reales de FLEX más parecidos a las condiciones elegidas y promedia sus resultados. Cada predicción dice en qué ensayos se basa y avisa cuando las condiciones salen de lo que se ha medido.</p>
+      <p class="lede">Elige combustible y atmósfera: el modelo promedia los ensayos reales de FLEX más parecidos y avisa cuando sales de lo medido.</p>
     </div>
     <div class="grid-sim">
-      <div data-slot="controls"></div>
+      <div class="sim-side"><div class="side-title">Condiciones del ensayo</div><div data-slot="controls"></div></div>
       <div style="display:grid;gap:14px;min-width:0">
         <div class="statusline" id="sim-cov"></div>
         <div class="outputs" id="sim-out"></div>
@@ -39,7 +39,7 @@ export function mountSimulator(root, data, { controls, scenario, gravity }) {
       <div class="panel stack">
         <h3>Ensayos en los que se basa</h3>
         <div class="tablewrap"><table id="sim-nb"></table></div>
-        <p class="dim small">Modelo: ${7} vecinos más cercanos del mismo combustible, ponderados por distancia. Validación dejando uno fuera sobre ${METRICS.n} ensayos: R² = ${METRICS.r2} y error medio de ${METRICS.mae} mm²/s en K; acierta la extinción en ${Math.round(METRICS.acc * 100)} % de los casos (${Math.round(METRICS.base * 100)} % si siempre se predice la clase más común).</p>
+        <details class="more"><summary>Cómo funciona la predicción</summary><p class="dim small">Modelo: ${7} vecinos más cercanos del mismo combustible, ponderados por distancia. Validación dejando uno fuera sobre ${METRICS.n} ensayos: R² = ${METRICS.r2} y error medio de ${METRICS.mae} mm²/s en K; acierta la extinción en ${Math.round(METRICS.acc * 100)} % de los casos (${Math.round(METRICS.base * 100)} % si siempre se predice la clase más común).</p></details>
       </div>
     </div>`;
 

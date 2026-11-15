@@ -23,7 +23,7 @@ const MARKS = [
  * Mapa de cobertura: cuántos ensayos hay en cada combinación de O₂ y presión.
  * Las celdas vacías son preguntas que nadie ha respondido con experimentos.
  */
-export function drawCoverage(svg, rows) {
+export function drawCoverage(svg, rows, marks = MARKS) {
   svg.innerHTML = "";
   const W = 560;
   const H = 330;
@@ -59,19 +59,24 @@ export function drawCoverage(svg, rows) {
   text(a, (m.l + W - m.r) / 2, H - 6, "Oxígeno (fracción molar)", { "text-anchor": "middle" });
   text(a, 4, m.t - 12, "Presión (atm)");
 
-  const px = (o2) => m.l + ((o2 - 0.1) / 0.02) * cw;
-  const py = (p) => {
+  // las marcas fuera del mapa se pegan al borde y lo dicen en la etiqueta
+  const o2Max = O2[O2.length - 1][1] - 0.005;
+  const pMin = P[0][0], pMax = P[P.length - 1][1] - 0.01;
+  const px = (o2) => m.l + ((Math.min(Math.max(o2, 0.1), o2Max) - 0.1) / 0.02) * cw;
+  const py = (p0) => {
+    const p = Math.min(Math.max(p0, pMin), pMax);
     const i = P.findIndex(([lo, hi]) => p >= lo && p < hi);
     const [lo, hi] = P[i];
     return H - m.b - i * ch - ((p - lo) / (hi - lo)) * ch;
   };
-  MARKS.forEach((mk) => {
+  marks.forEach((mk) => {
     const cx = px(mk.o2);
     const cy = py(mk.P);
-    el("circle", { cx, cy, r: 7, fill: "none", stroke: "#fff", "stroke-width": 2 }, svg);
+    const off = mk.o2 > o2Max || mk.o2 < 0.1 || mk.P < pMin || mk.P > pMax;
+    el("circle", { cx, cy, r: 7, fill: "none", stroke: "#fff", "stroke-width": 2, ...(off ? { "stroke-dasharray": "3 2" } : {}) }, svg);
     el("circle", { cx, cy, r: 2.5, fill: "#fff" }, svg);
     const right = cx < W - 150;
-    text(svg, right ? cx + 12 : cx - 12, cy - 10, mk.label, { "text-anchor": right ? "start" : "end", style: "fill:#fff" });
+    text(svg, right ? cx + 12 : cx - 12, cy - 10, off ? `${mk.label} (fuera del mapa)` : mk.label, { "text-anchor": right ? "start" : "end", style: "fill:#fff" });
   });
 
   return seq;

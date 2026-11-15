@@ -1,7 +1,10 @@
 import "../styles/lab3d.css";
-import { esc, fmt, FUEL } from "../core/dom.js";
+import { esc, fmt, FUEL, END } from "../core/dom.js";
+import { tr } from "../core/i18n.js";
 import { gravitySwitch } from "../ui/chips.js";
+import { SLIDERS } from "../ui/controls.js";
 import { conditions } from "../state.js";
+import { simQuery, outcome } from "../model/experiments.js";
 import { PRESETS } from "../model/flame.js";
 import { ENVS, HOTSPOTS, VIEWS, LEVELS, STEPS, matchPreset, narrate, stepOf } from "../model/lab.js";
 import { statusLine } from "./simulator.js";
@@ -11,6 +14,7 @@ const ICON = {
   pause: '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 2h3v10H3zM8 2h3v10H8z" fill="currentColor"/></svg>',
   restart: '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7a4.5 4.5 0 1 0 1.4-3.2M2.2 1.6v2.6h2.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   full: '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 5V1.5H5M9 1.5h3.5V5M12.5 9v3.5H9M5 12.5H1.5V9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  info: '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v4M8 4.9v.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
   sliders: '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 4h6M11 4h1.5M1.5 10h1.5M6.5 10h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="4" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="4.7" cy="10" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
 };
 
@@ -31,25 +35,27 @@ function seg(box, options, value, onPick) {
 }
 
 export function mountFlame3D(root, data, { controls, scenario, gravity }) {
+  // Disposición de app: barra arriba, escena a todo el alto y panel lateral con escenarios y condiciones.
   root.innerHTML = `
-    <div class="section-head">
-      <div class="eyebrow">Laboratorio virtual · parametrizado por el modelo</div>
-      <h2>Entra al laboratorio donde arde la gota</h2>
-      <p class="lede">La misma predicción de las gráficas 2D, dentro de una recreación de la cámara de combustión de FLEX: agujas que despliegan la gota, ignitores de hilo caliente y las cámaras científicas reales. Cada escenario cambia la atmósfera y también el lugar.</p>
-    </div>
-    <div class="lab-scenes" id="v3-scenes" role="group" aria-label="Escenarios"></div>
-    <div class="grid-sim">
-      <div data-slot="controls"></div>
-      <div class="lab-col">
-        <div class="statusline" id="v3-cov"></div>
-        <div id="v3-toolslot">
-          <div class="lab-toolbar" id="v3-toolbar">
-            <div id="v3-g"></div>
-            <div class="lab-pick"><span>Vista</span><div class="seg" id="v3-view" role="group" aria-label="Vista libre o cámara"></div></div>
-            <div class="lab-pick"><span>Escala</span><div class="seg" id="v3-level" role="group" aria-label="Escala de la vista libre"></div></div>
-            <div class="lab-pick"><span>Lectura</span><div class="seg" id="v3-aud" role="group" aria-label="Nivel de lectura"></div></div>
-          </div>
+    <div class="lab-app" id="v3-app">
+      <div class="lab-bar" id="v3-toolslot">
+        <div class="lab-toolbar" id="v3-toolbar">
+          <div id="v3-g"></div>
+          <div class="lab-pick"><span>Vista</span><div class="seg" id="v3-view" role="group" aria-label="Vista libre o cámara"></div></div>
+          <div class="lab-pick"><span>Escala</span><div class="seg" id="v3-level" role="group" aria-label="Escala de la vista libre"></div></div>
+          <div class="lab-pick"><span>Lectura</span><div class="seg" id="v3-aud" role="group" aria-label="Nivel de lectura"></div></div>
         </div>
+        <div class="lab-bar-end">
+          <button type="button" class="lab-iconbtn" id="v3-about" aria-expanded="false" aria-controls="v3-aboutbox" title="Acerca de este laboratorio">${ICON.info}</button>
+          <button type="button" class="lab-iconbtn" id="v3-side-btn" aria-pressed="true" aria-controls="v3-side" title="Mostrar u ocultar las condiciones">${ICON.sliders}<span>Condiciones</span></button>
+        </div>
+        <div class="lab-about" id="v3-aboutbox" role="dialog" aria-label="Acerca de este laboratorio" hidden>
+          <h3>Entra al laboratorio donde arde la gota</h3>
+          <p>La misma predicción de las gráficas 2D, dentro de una recreación de la cámara de combustión de FLEX: agujas que despliegan la gota, ignitores de hilo caliente y las cámaras científicas reales. Cada escenario cambia la atmósfera y también el lugar.</p>
+          <p>Vista libre: arrastra para orbitar · rueda o pellizco para pasar de la gota a la cámara y al laboratorio. Vistas de cámara: punto de vista fijo del instrumento, la rueda hace zoom digital. En pantalla completa, el botón «Condiciones» deja cambiar combustible, atmósfera y gravedad sin salir. Recreación ilustrativa del hardware descrito en los documentos de FLEX (CIR, MDCA, HiBMS, LLUV, torre de caída ZGF), no un modelo CAD. El radio de la llama es cualitativo; la tasa de consumo, la extinción y la llama fría vienen de la predicción.</p>
+        </div>
+      </div>
+      <div class="lab-main">
         <div class="stage stage-3d lab" id="v3-stage" data-env="iss" data-view="free" data-aud="plain" aria-label="Laboratorio 3D interactivo: gota, llama y cámara de combustión">
           <div class="msg" id="v3-msg">Cargando laboratorio 3D…</div>
           <div class="lab-fx" aria-hidden="true"></div>
@@ -84,8 +90,24 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
             </div>
           </div>
         </div>
-        <p class="lab-envtext" id="v3-envtext"></p>
-        <p class="dim small">Vista libre: arrastra para orbitar · rueda o pellizco para pasar de la gota a la cámara y al laboratorio. Vistas de cámara: punto de vista fijo del instrumento, la rueda hace zoom digital. En pantalla completa, el botón «Condiciones» deja cambiar combustible, atmósfera y gravedad sin salir. Recreación ilustrativa del hardware descrito en los documentos de FLEX (CIR, MDCA, HiBMS, LLUV, torre de caída ZGF), no un modelo CAD. El radio de la llama es cualitativo; la tasa de consumo, la extinción y la llama fría vienen de la predicción.</p>
+        <aside class="lab-side" id="v3-side" aria-label="Condiciones del ensayo">
+          <div class="statusline lab-status" id="v3-cov"></div>
+          <section class="lab-side-sec">
+            <div class="lab-side-title"><span>Ensayo real de FLEX</span></div>
+            <select id="v3-test" class="lab-test-select" aria-label="Cargar un ensayo real de FLEX"></select>
+            <button type="button" class="lab-linkbtn" id="v3-nearest" hidden></button>
+            <div class="lab-real" id="v3-real" aria-live="polite" hidden></div>
+          </section>
+          <section class="lab-side-sec">
+            <div class="lab-side-title"><span>Escenarios</span><span class="lab-custom" id="v3-custom" hidden>Condiciones personalizadas</span></div>
+            <div class="lab-scenes" id="v3-scenes" role="group" aria-label="Escenarios"></div>
+          </section>
+          <section class="lab-side-sec">
+            <div class="lab-side-title"><span>Condiciones del ensayo</span></div>
+            <div data-slot="controls"></div>
+          </section>
+          <p class="lab-envtext" id="v3-envtext"></p>
+        </aside>
       </div>
     </div>`;
 
@@ -122,6 +144,75 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
     else conditions.set({ ...p.q });
   });
 
+  // ---- ensayos reales: cargar las condiciones de un ensayo de FLEX y mostrar cómo terminó de verdad ----
+  const testSel = q("#v3-test");
+  const realBox = q("#v3-real");
+  const nearestBtn = q("#v3-nearest");
+  const flexRows = data.flex.filter((r) => FUEL[r.fuel] && r.o2 != null && r.P != null && r.d0 != null);
+  const optLabel = (r) => `FLEX #${r.n} · ${r.id} · ${Math.round(r.o2 * 100)} % O₂ · ${fmt(r.P)} atm${r.co2 ? ` · ${Math.round(r.co2 * 100)} % CO₂` : ""}${r.he ? ` · ${Math.round(r.he * 100)} % He` : ""}`;
+  testSel.innerHTML = `<option value="">${esc(tr("Elegir un ensayo…"))}</option>` +
+    Object.keys(FUEL).map((f) => `<optgroup label="${esc(tr(FUEL[f].es))}">${flexRows.filter((r) => r.fuel === f).map((r) => `<option value="${esc(r.id)}">${esc(optLabel(r))}</option>`).join("")}</optgroup>`).join("");
+  let loaded = null; // { label, q, real, measured }
+  const sameQ = (a, b) => a && b && a.fuel === b.fuel && SLIDERS.every((s) => Math.abs(a[s.key] - b[s.key]) < 1e-6);
+  function paintReal() {
+    realBox.hidden = !loaded;
+    if (!loaded) return;
+    realBox.innerHTML = loaded.error
+      ? `<span class="dim">${esc(loaded.error)}</span>`
+      : `<b>${esc(loaded.label)}</b><span>Resultado real: ${esc(loaded.real)}</span>${loaded.measured ? `<span class="mono">${esc(loaded.measured)}</span>` : ""}<span class="dim">Compáralo con la predicción del modelo arriba y en la escena.</span>`;
+  }
+  function apply(entry) {
+    loaded = entry;
+    // primero las condiciones: si la gravedad cambiara antes, el repintado vería las anteriores y descartaría el ensayo
+    conditions.set({ ...entry.q });
+    gravity.set({ g: 0 });
+    paintReal();
+    scene?.restart();
+  }
+  function loadFlex(r) {
+    const qq = { fuel: r.fuel };
+    for (const s of SLIDERS) qq[s.key] = Math.min(s.max, Math.max(s.min, r[s.key] ?? 0));
+    testSel.value = r.id;
+    apply({ label: `FLEX #${r.n} · ${r.id}`, q: qq, real: END[r.end] || r.end || "—", measured: r.K != null ? `K = ${fmt(r.K)} mm²/s${r.tb != null ? ` · ${fmt(r.tb, 1)} s` : ""}` : "" });
+  }
+  // uid como en Test Records: «PSI-69:20CAL08»; los de FLEX están en dashboard.json, los demás en experiments.json
+  async function loadUid(uid) {
+    const [acc, id] = uid.split(":");
+    const r = acc === "PSI-69" && flexRows.find((x) => x.id === id);
+    if (r) return loadFlex(r);
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}data/experiments.json`);
+      const db = await res.json();
+      const row = db.rows.find((x) => x.uid === uid);
+      const sim = row ? simQuery(row, SLIDERS) : { why: "Ese ensayo no está en las tablas de PSI." };
+      if (!sim.q) { loaded = { error: sim.why }; paintReal(); return; }
+      testSel.value = "";
+      apply({ label: `${acc} · ${row.test_id}`, q: sim.q, real: outcome(row), measured: row.burning_rate_mm2_s != null ? `K = ${fmt(row.burning_rate_mm2_s)} mm²/s` : "" });
+    } catch {
+      loaded = { error: "No se pudo cargar la tabla de ensayos." };
+      paintReal();
+    }
+  }
+  testSel.addEventListener("change", () => {
+    const r = flexRows.find((x) => x.id === testSel.value);
+    if (r) loadFlex(r);
+  });
+  nearestBtn.addEventListener("click", () => {
+    const r = flexRows.find((x) => x.id === nearestBtn.dataset.id);
+    if (r) loadFlex(r);
+  });
+  function syncReal(sim) {
+    // si el usuario mueve las condiciones, el ensayo cargado deja de aplicar
+    if (loaded && !loaded.error && !sameQ(loaded.q, sim.q)) { loaded = null; testSel.value = ""; paintReal(); }
+    const nb = sim.pr.nb[0]?.r;
+    nearestBtn.hidden = !nb || !!loaded?.label?.endsWith(nb.id);
+    if (nb) {
+      nearestBtn.dataset.id = nb.id;
+      nearestBtn.textContent = tr(`Cargar el ensayo real más parecido: FLEX #${nb.n}`);
+    }
+  }
+  const route = (sub) => { if (sub?.startsWith("test/")) loadUid(sub.slice(5)); };
+
   // ---- telemetría ----
   const tele = q("#v3-tele");
   tele.innerHTML = `
@@ -152,9 +243,12 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
     const env = ENVS[envId];
     stage.dataset.env = envId;
     q("#v3-env").textContent = env.name;
-    q("#v3-place").textContent = custom ? `${env.place} · condiciones personalizadas` : env.place;
+    // nodos separados: el traductor reconoce el lugar completo y la etiqueta por su lado
+    q("#v3-place").innerHTML = custom ? `${esc(env.place)} · <span>condiciones personalizadas</span>` : esc(env.place);
     q("#v3-envtext").innerHTML = `<b>${env.name}.</b> ${aud === "plain" ? env.plain : env.tech}`;
     scenes.querySelectorAll(".lab-scene").forEach((b) => b.setAttribute("aria-pressed", !custom && b.dataset.env === envId));
+    q("#v3-custom").hidden = !custom;
+    syncReal(sim);
     q('#v3-steps [data-step="cool"]').hidden = !sim.cool;
 
     q("#v3-cov").innerHTML = statusLine(sim) +
@@ -337,7 +431,7 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
       drawer.hidden = q("#v3-cond").getAttribute("aria-pressed") !== "true";
     } else {
       drawer.hidden = true;
-      q("#v3-toolslot").appendChild(q("#v3-toolbar"));
+      q("#v3-toolslot").prepend(q("#v3-toolbar"));
       if (active) q('[data-slot="controls"]').appendChild(controls);
     }
   }
@@ -359,14 +453,41 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
     if (!req) maximize(true);
     else req.catch(() => maximize(true));
   });
-  addEventListener("keydown", (e) => { if (e.key === "Escape" && stage.classList.contains("lab-max")) maximize(false); });
+  addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && stage.classList.contains("lab-max")) maximize(false);
+    if (e.key === "Escape" && !about.hidden) showAbout(false);
+  });
+
+  // ---- panel lateral y ayuda ----
+  const app = q("#v3-app");
+  const sideBtn = q("#v3-side-btn");
+  const SIDE_KEY = "flame.lab.side";
+  const setSide = (open) => {
+    app.classList.toggle("side-closed", !open);
+    sideBtn.setAttribute("aria-pressed", open);
+    try { localStorage.setItem(SIDE_KEY, open ? "1" : "0"); } catch { /* sin almacenamiento */ }
+  };
+  let sideOpen = true;
+  try { sideOpen = localStorage.getItem(SIDE_KEY) !== "0"; } catch { /* sin almacenamiento */ }
+  setSide(sideOpen);
+  sideBtn.addEventListener("click", () => setSide(app.classList.contains("side-closed")));
+  const about = q("#v3-aboutbox");
+  const aboutBtn = q("#v3-about");
+  function showAbout(on) { about.hidden = !on; aboutBtn.setAttribute("aria-expanded", on); }
+  aboutBtn.addEventListener("click", () => showAbout(about.hidden));
+  addEventListener("pointerdown", (e) => { if (!about.hidden && !about.contains(e.target) && !aboutBtn.contains(e.target)) showAbout(false); });
 
   const msg = q("#v3-msg");
   // si el 3D no arranca o se pierde el contexto, se ofrece reintentar o pasar a las gráficas 2D
   function fail(text) {
     msg.hidden = false;
-    msg.innerHTML = `<span>${esc(text)}</span><span class="lab-msg-actions"><button type="button" class="lab-btn" data-act="retry">Reintentar</button><a class="lab-btn" href="#simulador/2d">Ver gráficas 2D</a></span>`;
+    msg.innerHTML = `<span>${esc(text)}</span><span class="lab-msg-actions"><button type="button" class="lab-btn" data-act="retry">Reintentar</button><button type="button" class="lab-btn" data-act="2d">Ver gráficas 2D</button></span>`;
     msg.querySelector('[data-act="retry"]').addEventListener("click", start);
+    // dentro de la consola se cambia su dirección, para que la barra lateral marque el simulador
+    msg.querySelector('[data-act="2d"]').addEventListener("click", () => {
+      try { if (window.parent !== window) { window.parent.location.hash = "#/simulator"; return; } } catch { /* otro origen */ }
+      location.hash = "#simulator";
+    });
   }
   function lost() {
     scene?.dispose();
@@ -415,13 +536,15 @@ export function mountFlame3D(root, data, { controls, scenario, gravity }) {
   }
 
   return {
-    async enter() {
+    async enter(sub) {
       active = true;
       q('[data-slot="controls"]').appendChild(controls);
       paintStatic(scenario.get());
       unsub = scenario.subscribe(paintStatic);
+      route(sub);
       await start();
     },
+    route,
     leave() {
       active = false;
       unsub?.();

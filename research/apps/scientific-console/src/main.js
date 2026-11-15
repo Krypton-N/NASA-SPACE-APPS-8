@@ -14,6 +14,8 @@ import { renderEvidence } from './views/evidence.js';
 import { renderNotebook } from './views/notebook.js';
 import { loadChats, saveChats, newChat, loadNotebook, saveNotebook, notebookEntry } from './chats.js';
 import './extensions.css';
+import './workspace.css';
+import './workspace-views.css';
 
 const navigation=[['assistant','Research Assistant'],['investigations','Investigations'],['compare','Compare'],['discover','Discover'],['evidence','Evidence'],['notebook','Notebook']];
 const renderers={assistant:renderAssistant,investigations:renderInvestigations,compare:renderCompare,discover:renderDiscover,evidence:renderEvidence,notebook:renderNotebook};
@@ -24,10 +26,13 @@ const renderers={assistant:renderAssistant,investigations:renderInvestigations,c
  * [{label, items:[{key, label, icon}]}]. `onExternal(key, params, panel)` is called when one
  * of them opens, and `onExternal(null)` when the console returns to its own views.
  */
-export function mountScientificConsole(target,{apiBase=import.meta.env.VITE_API_BASE || '/api/v1',sections=[],onExternal=()=>{}}={}) {
+export function mountScientificConsole(target,{apiBase=import.meta.env.VITE_API_BASE || '/api/v1',sections=[],onExternal=()=>{},home='assistant'}={}) {
   const external=new Map(sections.flatMap(s=>s.items.map(i=>[i.key,{...i,section:s.label}])));
   const labelOf=name=>external.get(name)?.label || navigation.find(([key])=>key===name)?.[1] || '';
-  const sectionsHTML=sections.map(s=>`<div class="sidebar-rule"></div><span class="sidebar-label">${esc(s.label)}</span><nav aria-label="${esc(s.label)}">${s.items.map(i=>`<a class="nav-link" href="#/${i.key}" data-nav="${i.key}">${icon(i.icon || i.key)}<span>${esc(i.label)}</span></a>`).join('')}</nav>`).join('');
+  // `top: true` places a host section above the research workspace (e.g. a mission dashboard)
+  const sectionHTML=s=>`<span class="sidebar-label">${esc(s.label)}</span><nav aria-label="${esc(s.label)}">${s.items.map(i=>`<a class="nav-link" href="#/${i.key}" data-nav="${i.key}" data-label="${esc(i.label)}">${icon(i.icon || i.key)}<span>${esc(i.label)}</span></a>`).join('')}</nav>`;
+  const topHTML=sections.filter(s=>s.top).map(s=>sectionHTML(s)+'<div class="sidebar-rule"></div>').join('');
+  const sectionsHTML=sections.filter(s=>!s.top).map(s=>`<div class="sidebar-rule"></div><span class="sidebar-label">${esc(s.label)}</span><nav aria-label="${esc(s.label)}">${s.items.map(i=>`<a class="nav-link" href="#/${i.key}" data-nav="${i.key}" data-label="${esc(i.label)}">${icon(i.icon || i.key)}<span>${esc(i.label)}</span></a>`).join('')}</nav>`).join('');
   // Several browser-kept chats; state.session is the active one (same shape as before plus model/deep).
   const stored=loadChats();
   const state={session:stored.active,chats:stored.chats,notebook:loadNotebook(),chatBusy:false,pendingQuestion:'',menuOpen:false,routeKey:'',compare:{},connected:false};
@@ -44,7 +49,7 @@ export function mountScientificConsole(target,{apiBase=import.meta.env.VITE_API_
     clear(){state.notebook=[];saveNotebook(state.notebook);},
   };
   function stopChat(){state.chatController?.abort();state.chatController=null;state.chatBusy=false;state.chatProgress=null;}
-  target.innerHTML=`<button class="nav-overlay" aria-label="Close navigation" hidden></button><aside class="sidebar" id="research-sidebar"><a class="brand" href="#/assistant" aria-label="Flame in Freefall, Research Assistant"><span class="brand-mark">${icon('flame')}</span><span>FLAME IN<br>FREEFALL<small>SCIENTIFIC INTELLIGENCE</small></span></a><button class="icon-button mobile-nav-close" aria-label="Close navigation">${icon('close')}</button><div class="sidebar-rule"></div><span class="sidebar-label">RESEARCH WORKSPACE</span><nav aria-label="Primary research navigation">${navigation.map(([key,label])=>`<a class="nav-link" href="#/${key}" data-nav="${key}">${icon(key)}<span>${label}</span>${key==='assistant' ? '<span class="nav-spark"></span>' : ''}</a>`).join('')}</nav><button class="sidebar-new" id="new-conversation">${icon('plus')} New conversation</button>${sectionsHTML}</aside><div class="workspace"><header class="topbar"><div><button class="icon-button menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-controls="research-sidebar" aria-expanded="false">${icon('menu')}</button><span class="workspace-label" id="workspace-label">RESEARCH WORKSPACE</span><span class="breadcrumb-divider">/</span><span id="breadcrumb">Research Assistant</span></div><div class="topbar-right"><span class="research-context">MICROGRAVITY · COMBUSTION SCIENCE</span><button class="icon-button" data-classifications aria-label="Understand scientific evidence classifications">${icon('evidence')}</button></div></header><main id="main-content" tabindex="-1"></main><section class="external-panel" id="external-panel" hidden></section><footer class="workspace-footer"><span>FLAME IN FREEFALL <i></i> SCIENTIFIC INTELLIGENCE</span><button class="inline-button" data-about>About this research tool</button></footer></div><aside class="evidence-drawer" id="evidence-drawer" aria-label="Evidence inspector" hidden></aside><div class="toast" role="status" hidden></div>`;
+  target.innerHTML=`<button class="nav-overlay" aria-label="Close navigation" hidden></button><aside class="sidebar" id="research-sidebar"><a class="brand" href="#/${home}" aria-label="Flame in Freefall, ${esc(labelOf(home) || 'Research Assistant')}"><span class="brand-mark">${icon('flame')}</span><span>FLAME IN<br>FREEFALL<small>SCIENTIFIC INTELLIGENCE</small></span></a><button class="icon-button mobile-nav-close" aria-label="Close navigation">${icon('close')}</button><div class="sidebar-rule"></div>${topHTML}<span class="sidebar-label">RESEARCH WORKSPACE</span><nav aria-label="Primary research navigation">${navigation.map(([key,label])=>`<a class="nav-link" href="#/${key}" data-nav="${key}" data-label="${label}">${icon(key)}<span>${label}</span>${key==='assistant' ? '<i class="nav-spark" aria-hidden="true"></i>' : ''}</a>`).join('')}</nav><button class="sidebar-new" id="new-conversation" data-label="New conversation">${icon('plus')}<span>New conversation</span></button>${sectionsHTML}</aside><div class="workspace"><header class="topbar"><div><button class="icon-button menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-controls="research-sidebar" aria-expanded="false">${icon('menu')}</button><button class="icon-button sidebar-toggle" id="sidebar-toggle" aria-controls="research-sidebar" aria-expanded="true" aria-label="Collapse sidebar" title="Collapse sidebar (Ctrl+B)">${icon('sidebar')}</button><span class="workspace-label" id="workspace-label">RESEARCH WORKSPACE</span><span class="breadcrumb-divider">/</span><span id="breadcrumb">Research Assistant</span></div><div class="topbar-right"><span class="research-context">MICROGRAVITY · COMBUSTION SCIENCE</span><button class="icon-button" data-classifications aria-label="Understand scientific evidence classifications">${icon('evidence')}</button></div></header><main id="main-content" tabindex="-1"></main><section class="external-panel" id="external-panel" hidden></section><footer class="workspace-footer"><span>FLAME IN FREEFALL <i></i> SCIENTIFIC INTELLIGENCE</span><button class="inline-button" data-about>About this research tool</button></footer></div><aside class="evidence-drawer" id="evidence-drawer" aria-label="Evidence inspector" hidden></aside><div class="toast" role="status" hidden></div>`;
   const root=target.querySelector('main');const drawer=target.querySelector('#evidence-drawer');const panel=target.querySelector('#external-panel');let externalOpen=false;
   let current={name:'assistant',params:{}};let overviewPromise=null;let drawerOrigin=null;let drawerVersion=0;let drawerController=null;
   const save=()=>{state.session.updatedAt=Date.now();saveChats(state.chats,state.session);};
@@ -53,20 +58,28 @@ export function mountScientificConsole(target,{apiBase=import.meta.env.VITE_API_
   let renderVersion=0;let viewController=null;
   function render(){
     const version=++renderVersion;viewController?.abort();viewController=new AbortController();
-    const route=(location.hash || '#/assistant').slice(2);const [name,query='']=route.split('?');current={name:renderers[name] || external.has(name)?name:'assistant',params:Object.fromEntries(new URLSearchParams(query))};state.routeKey=current.name+'?'+query;
+    const route=(location.hash || '#/'+home).slice(2);const [name,query='']=route.split('?');current={name:renderers[name] || external.has(name)?name:(renderers[home] || external.has(home) ? home : 'assistant'),params:Object.fromEntries(new URLSearchParams(query))};state.routeKey=current.name+'?'+query;
+    // #/assistant?ask=… (e.g. from the mission dashboard) sends that question once
+    if(current.name==='assistant' && current.params.ask){const question=current.params.ask;history.replaceState(null,'','#/assistant');current.params={};state.routeKey='assistant?';if(!state.chatBusy)state.pendingQuestion=question;}
     target.querySelectorAll('[data-nav]').forEach(link=>{const selected=link.dataset.nav===current.name;link.classList.toggle('active',selected);selected?link.setAttribute('aria-current','page'):link.removeAttribute('aria-current');});target.querySelector('#breadcrumb').textContent=labelOf(current.name);
     const ext=external.get(current.name);
+    target.dataset.view=current.name;
     target.querySelector('#workspace-label').textContent=ext ? ext.section : 'RESEARCH WORKSPACE';
     target.classList.toggle('external-mode',!!ext);root.hidden=!!ext;panel.hidden=!ext;
     if(ext){externalOpen=true;onExternal(current.name,current.params,panel);return;}
     if(externalOpen){externalOpen=false;onExternal(null,{},panel);}
     const key=state.routeKey;const versions=new Map();const controllers=new Map();const scopeSignal=viewController.signal;
-    const ctx={latest:channel=>{controllers.get(channel)?.abort();const controller=new AbortController();controllers.set(channel,controller);const n=(versions.get(channel)||0)+1;versions.set(channel,n);const fresh=()=>versions.get(channel)===n;fresh.api=api.scoped(AbortSignal.any([scopeSignal,controller.signal]));return fresh;},state,api:api.scoped(viewController.signal),chatAPI:api,root,params:current.params,overview,save,navigate,active:()=>version===renderVersion,view:html=>{if(version===renderVersion)root.innerHTML=html;},rerender:()=>{if(current.name===name || !renderers[name])render();},ask:question=>ask(question),evidence:openEvidence,chats,notebook,models:()=>modelsPromise,toast};
+    const ctx={latest:channel=>{controllers.get(channel)?.abort();const controller=new AbortController();controllers.set(channel,controller);const n=(versions.get(channel)||0)+1;versions.set(channel,n);const fresh=()=>versions.get(channel)===n;fresh.api=api.scoped(AbortSignal.any([scopeSignal,controller.signal]));return fresh;},state,api:api.scoped(viewController.signal),chatAPI:api,root,params:current.params,overview,save,navigate,active:()=>version===renderVersion,view:html=>{if(version===renderVersion)root.innerHTML=html;},rerender:()=>{if(current.name===name || !renderers[name])render();},ask:question=>ask(question),hasView:key=>!!renderers[key] || external.has(key),evidence:openEvidence,chats,notebook,models:()=>modelsPromise,toast};
     renderers[current.name](ctx).catch(e=>{if(ctx.active())root.innerHTML=errorState(e);});
   }
   function ask(question){if(state.chatBusy){toast('A scientific question is already being reviewed.');return;}state.pendingQuestion=question;navigate('assistant');}
   function toast(text){const node=target.querySelector('.toast');node.textContent=text;node.hidden=false;clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>node.hidden=true,6000);}
   function menu(open){state.menuOpen=open;target.classList.toggle('nav-open',open);target.querySelector('.nav-overlay').hidden=!open;target.querySelector('#menu-toggle').setAttribute('aria-expanded',String(open));updateMenu();if(open)target.querySelector('[aria-current="page"]')?.focus();else target.querySelector('#menu-toggle').focus();}
+  // Desktop sidebar can collapse to an icon rail; the choice is remembered in this browser.
+  const COLLAPSE_KEY='flame.sidebar.collapsed';
+  let collapsed=false;try{collapsed=localStorage.getItem(COLLAPSE_KEY)==='1';}catch{}
+  function setCollapsed(on,remember=true){collapsed=on;target.classList.toggle('sidebar-collapsed',on);const b=target.querySelector('#sidebar-toggle');const label=on?'Expand sidebar':'Collapse sidebar';b.setAttribute('aria-expanded',String(!on));b.setAttribute('aria-label',label);b.title=label+' (Ctrl+B)';if(remember)try{localStorage.setItem(COLLAPSE_KEY,on?'1':'0');}catch{}}
+  setCollapsed(collapsed,false);
   const mobile=matchMedia('(max-width: 900px)');
   function updateMenu(){target.querySelector('.sidebar').inert=mobile.matches && !state.menuOpen;root.inert=mobile.matches && state.menuOpen;}
   mobile.addEventListener('change',updateMenu);
@@ -97,6 +110,7 @@ export function mountScientificConsole(target,{apiBase=import.meta.env.VITE_API_
     if(button.matches('[data-about]')){classificationPanel();drawer.querySelector('.drawer-body').insertAdjacentHTML('afterbegin','<p>Independent research tool. Not an official NASA service.</p>');return;}
     if(button.matches('[data-evidence]'))return openEvidence(button.dataset.evidence);
     if(button.matches('[data-ask]'))return ask(button.dataset.ask);
+    if(button.matches('[data-go]'))return navigate(button.dataset.go,button.dataset.sub ? {sub:button.dataset.sub} : {});
     if(button.matches('[data-evidence-query]')){closeEvidence();return navigate('evidence',{query:button.dataset.evidenceQuery});}
     if(button.matches('[data-graph-entity]'))return navigate('discover',{entity:button.dataset.graphEntity});
     if(button.matches('[data-entity]'))return openRecord(button.dataset.entity);
@@ -105,10 +119,11 @@ export function mountScientificConsole(target,{apiBase=import.meta.env.VITE_API_
     if(button.matches('[data-retry]') && !button.onclick)return render();
     if(button.matches('#new-conversation'))return chats.create();
     if(button.matches('#menu-toggle'))return menu(!state.menuOpen);
+    if(button.matches('#sidebar-toggle'))return setCollapsed(!collapsed);
     if(button.matches('.mobile-nav-close,.nav-overlay'))return menu(false);
     if(button.matches('[data-nav]') && mobile.matches)menu(false);
   };
-  const onKey=e=>{if(e.key==='Escape'){if(!drawer.hidden)closeEvidence();else if(state.menuOpen)menu(false);}if(['Enter',' '].includes(e.key) && e.target.matches('g[data-evidence]')){e.preventDefault();openEvidence(e.target.dataset.evidence);}if(e.key==='Tab' && mobile.matches && state.menuOpen){const nodes=[...target.querySelector('.sidebar').querySelectorAll('a,button')].filter(n=>n.offsetParent!==null);if(e.shiftKey && document.activeElement===nodes[0]){e.preventDefault();nodes.at(-1).focus();}else if(!e.shiftKey && document.activeElement===nodes.at(-1)){e.preventDefault();nodes[0].focus();}}};
+  const onKey=e=>{if((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase()==='b' && !mobile.matches){e.preventDefault();setCollapsed(!collapsed);return;}if(e.key==='Escape'){if(!drawer.hidden)closeEvidence();else if(state.menuOpen)menu(false);}if(['Enter',' '].includes(e.key) && e.target.matches('g[data-evidence]')){e.preventDefault();openEvidence(e.target.dataset.evidence);}if(e.key==='Tab' && mobile.matches && state.menuOpen){const nodes=[...target.querySelector('.sidebar').querySelectorAll('a,button')].filter(n=>n.offsetParent!==null);if(e.shiftKey && document.activeElement===nodes[0]){e.preventDefault();nodes.at(-1).focus();}else if(!e.shiftKey && document.activeElement===nodes.at(-1)){e.preventDefault();nodes[0].focus();}}};
   const onLeave=()=>state.chatController?.abort();
   window.addEventListener('pagehide',onLeave);
   const onHash=()=>{render();if(!root.hidden)root.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});};

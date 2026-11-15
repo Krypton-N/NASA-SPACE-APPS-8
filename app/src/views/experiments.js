@@ -41,7 +41,7 @@ export function mountExperiments(root, base, { go, gravity }) {
     <div class="section-head">
       <div class="eyebrow">Experimento individual · tablas de NASA PSI limpias</div>
       <h2>Cada ensayo, con su fuente</h2>
-      <p class="lede">Elige un ensayo para ver sus condiciones, cómo terminó y dónde queda frente al resto de su campaña. Cada valor enlaza a la tabla de NASA de donde salió, y los ensayos de gotas se pueden repetir en el laboratorio 3D.</p>
+      <p class="lede">Elige un ensayo de la lista: verás sus condiciones, cómo terminó y su fuente en NASA. Los de gotas se pueden repetir en el laboratorio 3D.</p>
     </div>
     <div class="exp-grid">
       <aside class="panel exp-list" aria-label="Lista de experimentos">
@@ -116,7 +116,7 @@ export function mountExperiments(root, base, { go, gravity }) {
         <span class="exp-item-top"><span class="exp-camp">${esc(db.camp[r.accession]?.campaign)}</span><b>${esc(r.test_id)}</b>
           ${r.excluded ? `<span class="exp-mark crit" title="Excluido: copia duplicada">${ICON.crit}</span>` : n ? `<span class="exp-mark warn" title="${n} observaciones de calidad">${ICON.warn}${n}</span>` : ""}</span>
         <span class="exp-item-sub">${esc(subject(r))}${r.date ? ` · ${r.date}` : ""}</span>
-        ${hwShort ? `<span class="exp-item-sub" style="color:#38bdf8;font-size:11px;">🛠️ ${esc(hwShort)}</span>` : ""}
+        ${hwShort ? `<span class="exp-item-hw">${esc(hwShort)}</span>` : ""}
         <span class="exp-item-out">${esc(outcome(r))}</span>
       </button>`;
     }).join("") + (rows.length > st.shown
@@ -156,7 +156,7 @@ export function mountExperiments(root, base, { go, gravity }) {
       const a = item.getBoundingClientRect(), b = box.getBoundingClientRect();
       box.scrollTop += a.top - b.top - box.clientHeight / 2 + a.height / 2;
     }
-    history.replaceState(null, "", `#datos/ensayos/${encodeURIComponent(uid)}`);
+    history.replaceState(null, "", `#records/${encodeURIComponent(uid)}`);
     paintDetail(r);
     if (scroll && matchMedia("(max-width: 900px)").matches) q("#ex-detail").scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -241,7 +241,7 @@ export function mountExperiments(root, base, { go, gravity }) {
         <p class="dim small">La tabla de ${esc(camp.campaign)} solo registra condiciones, no cómo terminó cada ensayo. El resultado está en los videos y datos crudos de PSI.</p></section>`}
 
       <section class="panel stack">
-        <h3>🛠️ Hardware Experimental de este Ensayo</h3>
+        <h3>Hardware de este ensayo</h3>
         <div class="rag-hardware-grid" style="margin-top:4px;">
           <div class="rag-hw-item">
             <span class="rag-hw-label">Plataforma / Rack Orbital:</span>
