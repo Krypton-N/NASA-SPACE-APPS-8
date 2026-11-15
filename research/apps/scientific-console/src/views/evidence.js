@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { safeURL } from '../api.js';
 import { esc, human, icon, badge, loading, empty, errorState, pageHeading, option, resultCards } from '../ui.js';
 export async function renderEvidence(ctx) {

@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 /**
  * Entrada de la app: la consola científica de Liam (research/apps/scientific-console) con dos
  * secciones más en la barra lateral para las vistas del equipo. Esas vistas viven en lab.html y se

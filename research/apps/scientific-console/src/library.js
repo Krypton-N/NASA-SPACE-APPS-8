@@ -1,3 +1,4 @@
+// AI disclosure: this file was generated with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { esc, option } from './ui.js';
 
 /**

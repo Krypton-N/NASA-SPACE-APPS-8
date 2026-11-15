@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import "../styles/experiments.css";
 import { nf } from "../core/i18n.js";
 import { esc, ICON } from "../core/dom.js";

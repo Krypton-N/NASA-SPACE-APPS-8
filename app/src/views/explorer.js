@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { FLEX_DOI } from "../core/dom.js";
 import { chipGroup } from "../ui/chips.js";
 import { drawScatter, legendHTML } from "../charts/scatter.js";

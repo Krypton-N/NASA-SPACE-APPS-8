@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 // Diccionario español → inglés (técnico, para personal de NASA). La clave es el texto fuente tal como
 // aparece en pantalla; los números dentro de una clave valen como comodines y {a}, {b} como comodines de
 // texto (ver core/i18n.js). Se carga solo cuando el idioma activo es inglés.

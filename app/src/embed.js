@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 /**
  * Vistas del equipo (simuladores y datos de misión) para mostrarse dentro de la consola científica.
  *

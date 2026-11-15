@@ -1,3 +1,4 @@
+// AI disclosure: most of this file was rewritten with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import "../styles/overview.css";
 import { nf, t, tr } from "../core/i18n.js";
 import { esc, fmt, FUEL, END } from "../core/dom.js";

@@ -1,3 +1,4 @@
+// AI disclosure: parts of this file were modified with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { esc, human, icon, loading, empty, errorState, pageHeading, option, evidenceButton, fieldValue, fieldRole, fieldLabel, recordLabel, comparisonLabel } from '../ui.js';
 import { investigationOptions } from '../library.js';
 // Summary chips over a comparison result: how many rows fall in each assessment, click to filter.

@@ -1,3 +1,4 @@
+// AI disclosure: most of this file was rewritten with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 import { esc, human, icon, badge, loading, empty, errorState, pageHeading, option, evidenceButton, fieldLabel, fieldValue, fieldRole, recordLabel } from '../ui.js';
 import { measurementGroups, measurementChart } from '../visualizations.js';
 import { groupInvestigations, placeOf, shortTitle } from '../library.js';

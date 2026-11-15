@@ -1,3 +1,4 @@
+// AI disclosure: this file was generated with AI (Claude Code, Anthropic) for the November 2026 UI redesign.
 // Mission Overview: hábitats (model/habitats.js), pilares (model/pillars.js), hardware del inventario
 // (data/dashboard.json) y los textos del panel compacto (views/panorama.js).
 export default {
