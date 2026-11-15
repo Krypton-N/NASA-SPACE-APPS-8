@@ -16,7 +16,7 @@ export function mountExplorer(root, data, { open }) {
     <div class="section-head">
       <div class="eyebrow">FLEX · Flame Extinguishment Experiment · ISS 2009–2011</div>
       <h2>Tasa de quemado contra oxígeno</h2>
-      <p class="lede">Cada punto es una gota de combustible encendida en la Estación Espacial. La tasa de quemado K mide qué tan rápido se consume la gota (ley d²: d² = d₀² − K·t). El relleno indica cómo terminó el ensayo y un clic abre su ficha completa.</p>
+      <p class="lede">Cada punto es una gota encendida en la ISS; K mide qué tan rápido se consume (d² = d₀² − K·t). Filtra arriba y haz clic en un punto para abrir su ficha.</p>
     </div>
     <div class="panel stack">
       <div class="filters">
@@ -42,8 +42,8 @@ export function mountExplorer(root, data, { open }) {
         <p class="dim small">Encima de cada barra: número de ensayos en ese rango. Respeta los filtros de arriba.</p>
       </div>
     </div>
-    <div class="panel stack">
-      <h3>Cómo leer esto</h3>
+    <details class="panel stack how-to">
+      <summary>Cómo leer esto</summary>
       <ul class="tight">
         <li><b>Metanol</b> casi no produce hollín y arde con llama azul tenue. <b>Heptano</b> se parece a los combustibles líquidos comunes y sí produce hollín.</li>
         <li>En microgravedad la llama es una esfera alrededor de la gota: sin flotabilidad, el oxígeno llega solo por difusión.</li>
@@ -51,7 +51,7 @@ export function mountExplorer(root, data, { open }) {
         <li>FLEX añadió CO₂ y helio a la atmósfera para medir su efecto como supresores. Los extintores de la ISS son de CO₂.</li>
       </ul>
       <p class="dim small">Fuente: PSI-69 FLEX, tabla experimental (licencia CC0). <a href="${FLEX_DOI}" target="_blank" rel="noopener">doi:10.60555/mbq8-0451</a></p>
-    </div>`;
+    </details>`;
 
   const q = (s) => root.querySelector(s);
   const draw = () => {

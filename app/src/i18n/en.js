@@ -5,5 +5,6 @@ import ui from "./en.ui.js";
 import lab from "./en.lab.js";
 import experiments from "./en.experiments.js";
 import rag from "./en.rag.js";
+import mission from "./en.mission.js";
 
-export default { ...ui, ...lab, ...experiments, ...rag };
+export default { ...ui, ...lab, ...experiments, ...rag, ...mission };
