@@ -27,6 +27,19 @@ El equipo puede ampliar esta lista con cualquier otro uso de IA en el proyecto.
   - el modelo de predicción (`app/src/model/knn.js`, `app/src/model/flame.js`);
   - el render 3D (`app/src/render/**`).
 
+## Cambios posteriores
+
+- **Crédito de IA en la barra lateral de la consola** (noviembre de 2026): la línea
+  "Developed with the support of Claude Code (Anthropic) · Codex (OpenAI) · GLM (Z.ai)",
+  anclada al fondo de la barra lateral con letra más pequeña que las opciones, se añadió con
+  **GLM (Z.ai)**. Archivos: `research/apps/scientific-console/src/main.js` (línea de crédito) y
+  `research/apps/scientific-console/src/workspace.css` (estilos, tipografía mono y puntos
+  naranjas del lenguaje visual existente).
+- **Motor de evidencia** (`research/`, no tocado por el rediseño): su desarrollo está documentado en
+  `research/HANDOFF_CODEX.md` y `research/CLAUDE.md` — agentes **Codex (OpenAI)** y **Claude Code**
+  en la rama `diego/research`, con **Claude Sonnet 5.5** como modelo de desarrollo de la ingesta
+  (`SCIENCE_PROVIDER=anthropic`) y Nemotron de NVIDIA como proveedor por defecto.
+
 ## Archivos generados con IA
 
 - `app/src/i18n/en.mission.js`

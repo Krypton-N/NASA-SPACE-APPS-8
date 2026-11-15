@@ -1,4 +1,5 @@
-/* AI disclosure: this file was generated with AI (Claude Code, Anthropic) for the November 2026 UI redesign. */
+/* AI disclosure: this file was generated with AI (Claude Code, Anthropic) for the November 2026 UI redesign;
+   the sidebar AI credit styles were added with AI (GLM, Z.ai). See docs/AI_USAGE.md. */
 /*
  * Workspace layer: design tokens, collapsible sidebar, compact headers and the per-view layouts
  * of the redesign. Loaded after styles.css and extensions.css, so it only overrides what it names.
@@ -31,6 +32,9 @@
 .nav-spark { flex-shrink: 0; }
 .sidebar .sidebar-new { margin: 10px 0 2px; padding: 8px 10px; justify-content: flex-start; gap: 11px; font-size: var(--fs-sm); white-space: nowrap; }
 .sidebar .sidebar-new .icon { width: 18px; height: 18px; }
+/* Crédito de IA anclado al fondo de la barra lateral, letra más chica que las opciones (docs/AI_USAGE.md). */
+.sidebar-credit { margin-top: auto; padding: 6px 10px 2px; font: 10px/1.8 var(--mono); letter-spacing: .4px; color: var(--muted); }
+.sidebar-credit i { display: inline-block; width: 3px; height: 3px; background: var(--orange); border-radius: 50%; vertical-align: middle; margin: 0 3px 1px; }
 
 .sidebar-toggle { width: 34px; height: 34px; border-color: transparent; color: #8ba8ca; }
 .sidebar-toggle .icon { width: 18px; height: 18px; }
@@ -45,6 +49,7 @@
   .sidebar-collapsed .sidebar .nav-link,
   .sidebar-collapsed .sidebar .sidebar-new { justify-content: center; padding: 10px 0; }
   .sidebar-collapsed .sidebar .sidebar-new { border-style: solid; }
+  .sidebar-collapsed .sidebar-credit { display: none; }
   .sidebar-collapsed .sidebar .nav-link > span,
   .sidebar-collapsed .sidebar .sidebar-new > span {
     position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
